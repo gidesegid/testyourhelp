@@ -1,0 +1,46 @@
+            <!--  page-wrapper -->
+            <div id="page-wrapper">
+              <div class="row">
+                 <!-- page header -->
+                <div class="col-lg-12">
+                    <h1 class="page-header">admin works</h1>
+                </div>
+                <!--end page header -->
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                     <div>
+                       <input type="text" ng-model="user">
+                       <button type="button" name="button" ng-click="loadUser()">load user</button>
+                     </div>
+                     <div class="panel panel-default">
+                          <table>
+                            <tr>
+                              <th>name</th>
+                              <th>username</th>
+                               <th>permission</th>
+                               <th>permissionId</th>
+                               <th>permissionDescription</th>
+                               
+                          </tr>
+                              <tr ng-repeat="permission in permissions | filter:user">
+                                <td>{{permission.name}}</td>
+                                <td>{{permission.username}}</td>
+                                <td>
+                                <label>{{permission.permission}}</label>
+                                <select ng-model="selectedPermission">
+                                  <option ng-repeat="permissions in permissionCriterias">{{permissions}}</option>
+                                </select></td>
+                                <td>{{permission.permissionId}}</td>
+                                <td><input type="button" ng-click="updatePermission(permission.userId,selectedPermission,permission.permissionId)" value="update" class="btn btn-primary">
+                                <input type="button" ng-click="addPermission(permission.userId,selectedPermission,permission.permissionId)" value="add permission"> <button ng-click="deletePermission(permission.permissionId)">delete permission</button></td>
+                              </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    <!-- end wrapper -->

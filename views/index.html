@@ -1,0 +1,298 @@
+            
+
+
+
+ <div class="modal" id="saleItemIdInfo" tablindex="-1" data-backdrop="static" data-keyboard="false">   <!--info modal-->
+                   <div class="modal-dialog model-lg">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                            <button class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="">
+                                <a href="">{{catagories}}</a>
+                                <div class="gallery">
+                                    <img  ng-src="/saleThingsImageCollector/{{saleItemfileName}}" id="1" data-scale="2.4" height="200" width="200" class="thumbnail"></a>
+                                    <label>{{saleItemName}}</label><br>
+                                     <span translate="price"></span>
+                                     <p>{{price}}&nbsp;{{unit}}</p>
+                                 </div>
+                              </div>
+                               <div class="">
+                                 <a href="#" ng-click="getDetailsOfItemForSale()">get details of this item</a>
+                                 <table border="1" style="width:100%">
+                                      <thead>
+                                          <tr>
+                                              <th>measurment</th>
+                                              <th>quantity</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody ng-repeat="data in saleItemDetails">
+                                          <tr>
+                                               <td>{{data.size}}</td>
+                                               <td>{{data.amount}}</td>
+                                          </tr>
+                                      <tbody>
+                                  </table>
+                               </div>
+                            </div>
+                          </div>
+                      </div>
+                   </div>
+                  </div>
+            <!-- navbar top -->
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
+                <!-- navbar-header -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                      <span class="pull-left">
+                        <span class="logStyle" >&nbsp; &nbsp;&nbsp;Welcome to </span>
+                        <img ng-src="/assets/img/bird.png" width="90" height="90">
+                        <SPAN class="logStyle" >YOUR HELP LAB</SPAN>&nbsp; &nbsp;
+                        <span class="alert-info">
+                          &nbsp;<small><a href="" ng-click="changeLanguage('TG')">ትግርኛ</a></small>&nbsp; &nbsp;
+                          <small><a href="" ng-click="changeLanguage('EN')">EN</a></small>&nbsp; &nbsp;
+                        <small><a href="" ng-click="changeLanguage('NL')">NL</a></small>&nbsp;
+                        </span>
+                      </span>
+                </div>
+                <!-- end navbar-header -->
+                <!-- navbar-top-links -->
+                <ul class="nav navbar-top-links navbar-right">
+                      <li class="dropdown" ng-if="permission=='admin' || permission=='thingsToSale'" >
+                         <a ng-class="dropdown-toggle" data-toggle="dropdown" ui-sref="#">
+                             <span class="top-label label label-danger">{{numberOfMessagesInSaleClients}} </span><i class="fa fa-user fa-3x fa-shopping-cart"></i>
+                         </a>
+                         <ul class="dropdown-menu dropdown-messages topbarscrollbarNotification" id="topbarnotification-1">
+                             <li ng-repeat="saleThingsClient in saleItemNotice">
+                                           <div class='container2'>
+                                             <div style='margin-left:40px;'>
+                                             <h5><a href="#saleItemIdInfo" ng-click="getSaleItem()" data-toggle="modal">Talk about the item:{{saleThingsClient.saleItemId}}</a></h5>
+                                             <div>
+                                                  <p><a href="" ng-click="chatWithThisSaleClient(saleThingsClient.socketId,saleThingsClient.languageKey);myStyle={background:'lime'};" ng-style="myStyle">{{saleThingsClient.message}}-lets chat</a></p>
+                                             </div>
+                                             <div style="float:right;font-size:.8em"><span am-time-ago="saleThingsClient.date"></span></div>
+                                           </div>
+                                  <li class="divider"></li>
+                             </li>
+                             <a href="" ng-if="friendRequests.length>6" ng-click="getFriendRequestsOnScrolling()" translate="seeMoreFriendRequest">see more friend requests.....</a>
+                         </ul>
+                     </li>
+                    <!--friend requests-->
+                     <li class="dropdown">
+                        <a ng-class="dropdown-toggle" data-toggle="dropdown" href="#" ng-click="friendRequestHasBeenSeen()">
+                            <span class="top-label label label-danger">{{numberOfFriendRequests}}</span><i class="fa fa-user fa-3x fa fa-user-plus"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages scrollbarfriendRequestnotification" id="friendRequestnotification-1">
+                            <span translate="friendRequestsTranslates">friend requests</span>
+                            <li ng-repeat="friendRequest in friendRequests">
+                                          <div class='container2' ng-if="friendRequests.length>0">
+                                            <div>
+                                              <img  ng-src="/userImage/{{friendRequest.photo}}" width="10" height="10" class='iconDetailsFriendRequest'>
+                                            </div>
+                                            <div class="leftMargin">
+                                            <h4>{{friendRequest.username}}</h4>
+                                            <div class="confimtionAtTopBar">
+                                               <button type="button" ng-click="okFriendRequest(friendRequest.Id,friendRequest.fromUserId,friendRequest.userroom)" class="btn btn-small btn-success" translate="friendshipConfirmation">Confirm</button>&nbsp;&nbsp;
+                                               <button type="button" name="button" ng-click="noFriendRequest(friendRequest.Id,friendRequest.fromUserId,friendRequest.userroom)" class="btn btn-small btn-danger" translate="friendshipeDeleteConfirm">Delete</button>
+                                            </div><br>
+                                            <div class="timingAtTopBar"><span am-time-ago="friendRequest.date"></span></div>
+                                          </div>
+                                 <li class="divider"></li>
+                            </li>
+                            <a href="" ng-if="friendRequests.length>6" ng-click="getFriendRequestsOnScrolling()" translate="seeMoreFriendRequest">see more friend requests.....</a>
+                        </ul>
+                    </li>
+                    <!-- messages -->
+                    <li class="dropdown">
+                        <a ng-class="dropdown-toggle" data-toggle="dropdown" href="#" ng-click="messageHasBeenSeen()">
+                            <span class="top-label label label-danger">{{numberOfMessages}}</span><i class="fa fa-envelope fa-3x"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages topbarscrollbarmessageNotification" id="topbarmessagenotification-1">
+                            <span translate="messagesNotificationTranslate">new messages</span>
+                            <li class="list-group-item list-group-item-warning" ng-repeat="userMessage in postUserMessages">
+                                  <div class='container2'>
+                                    <div ng-if="postUserMessages.length!=0">
+                                     <img ng-src="/userImage/{{userMessage.photo}}" width="30" height="30">{{userMessage.username}}
+                                     <a href="" ng-click="letsChat(userMessage.fromUserId,userMessage.username,userMessage.room,userMessage.photo,userMessage.from)">{{userMessage.message}}</a>
+                                      <small am-time-ago="userMessage.date"></small>
+                                    </div>
+                                 <li class="divider"></li>
+                            </li>
+                            <a href="" ng-if="postUserMessages.length>4" ng-click="getMessageOnScrolling()" translate="seeMoreMessages">see more messages.......</a>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a ng-class="dropdown-toggle" data-toggle="dropdown" href="#" ng-click="notificationHasBeenSeen()">
+                            <span class="top-label label label-warning">{{notificationResultOne}}</span><i class="fa fa-bell fa-3x"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-alerts topbarscrollbarNotification" id="topbarnotification-1">
+                            <span translate="notificationsTranslation">notifications</span>
+                           <li class="list-group-item list-group-item-danger" ng-repeat="userNotificationMessages in userNotificationMessages">
+                                 <div class='container2'>
+                                    <img ng-src="/userImage/{{userNotificationMessages.photo}}" width="30" height="30"> <span><strong>{{userNotificationMessages.username}}:</strong>
+                                        <small class="pull-right" am-time-ago="userNotificationMessages.date"></small>
+                                     <p ng-if="languageKey=='TG'">{{userNotificationMessages.messageInTigrina}}</p>
+                                     <p ng-if="languageKey=='NL'">{{userNotificationMessages.message}}</p>
+                                     <p ng-if="languageKey=='EN'">{{userNotificationMessages.message}}</p>
+                                     <p ng-if="languageKey==null">{{userNotificationMessages.message}}</p>
+                                    </span>
+                                    <div class="userMessageMarginLeft">
+                                    
+                                    </div>
+                                  </div>
+                                 <li class="divider"></li>
+                           </li>
+                           <a href="" ng-if="userNotificationMessages.length>4" ng-click="getOtherNotificationsOnScrolling()"  translate="seeMoreNotifications">see more........</a>
+                        </ul>
+                        <!--end of notification-->
+                    </li>
+                    <li class="dropdown">
+                        <a ng-class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-sign-out fa_custom fa-2x"></i>
+                        </a>
+                        <!-- dropdown user-->
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="settings/{{userId}}"><i class="fa fa-gear fa-1x" translate="Settings"></i></a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a href="homePage" ng-click="logout()"><i class="fa fa-sign-out fa_custom fa-1x" translate="logout"></i></a>
+                            </li>
+                        </ul>
+                        <!-- end dropdown-user -->
+                    </li>
+                    <!-- end main dropdown -->
+                </ul>
+                <!-- end navbar-top-links -->
+                <div class="container" id="mydiv" ng-show="chatbox">
+                  <div class="row chat-window col-xs-6 col-sm-3 col-md-4 col-lg-4 chatWindow" id="chat_window_1">
+                     <div class="col-xs-12 col-md-12">
+                          <div class="panel panel-default">
+                              <div class=" chatHeader panel-heading top-bar">
+                                  <div class="col-md-8 col-xs-8">
+                                       <h3 class="panel-title" ng-model="toName"><span><img src="/assets/img/icons8-Chat-48.png"></span>{{toName}}
+                                       </h3>
+                                  </div>
+                                  <div id="messageBody" class="col-md-4 col-xs-4 messageBody">
+                                      <p ng-if="toName!=='Client'">
+                                        <button id="minim_chat_window1" class="btn btn-circle icon_minim btn-danger" ng-click="minimizChat()">{{chatSizedTo}}</button>&nbsp;&nbsp;<button class="btn btn-circle btn-danger closeChatIcon" ng-click="closeChat(toName)">X</button>
+                                      </p>
+                                      <p ng-if="toName=='Client'"> <button id="minim_chat_window1" class="btn btn-circle btn-danger icon_minim" ng-click="minimizChat()">{{chatSizedTo}}</button>&nbsp;&nbsp;<button class="btn btn-circle closeChatIcon btn-danger" ng-click="closeChatWithSupplier()">X</button></p>
+                                  </div>
+                              </div>
+                              <div class="panel-body msg_container_base"  id="chatbox2">
+                                  <div ng-show="hideChat" ng-repeat="user in minimizedData" class="row msg_container base_receive" chatbox2-scroll-bottom="ngRepeatFinished">
+                                   <div>
+                                        <div class="col-md-2 col-xs-2 avatar" ng-if="toName!=='Client'">
+                                          <img ng-src="/userImage/{{user.photo}}" class=" img-responsive ">
+                                      </div>
+                                     <div  class="col-md-10 col-xs-10">
+                                        <div  class="messages msg_receive">
+                                           <p style="font-size:14px;" ng-if="toName!=='Client'">{{user.message}}</p>
+                                           <p  class="userMessage" ng-if="toName=='Client'">{{user.message}}</p>
+                                          <small class="label label-info ng-binding ng-if="toName=='Client'">{{user.username}}</small> <span am-time-ago="user.date"></span>
+                                        </div>
+                                     </div>
+                                   </div>
+                                  </div>
+                                 <div ng-hide="showChat" ng-repeat="user in postUserMessagesFromChat" class="row msg_container base_receive" chatbox2-scroll-bottom="ngRepeatFinished">
+                                   <div>
+                                        <div class="col-md-2 col-xs-2 avatar" ng-if="toName!=='Client'">
+                                          <img ng-src="/userImage/{{user.photo}}" class=" img-responsive ">
+                                      </div>
+                                     <div  class="col-md-10 col-xs-10">
+                                        <div  class="messages msg_receive">
+                                           <p style="font-size:14px;" ng-if="toName!=='Client'">{{user.message}}</p>
+                                           <p  class="userMessage" ng-if="toName=='Client'">{{user.message}}</p>
+                                          <small class="label label-info ng-binding ng-if="toName=='Client'">{{user.username}}</small> <span am-time-ago="user.date"></span>
+                                        </div>
+                                     </div>
+                                   </div>
+                                  </div>
+                                  <p style="font-size:5;color:#ef6ede;" class="alert-info">{{isTyping}}</p>
+                              </div>
+                              <div class="panel-footer chatboxFooter">
+                                <div class="input-group" ng-if="toName!=='Client'">
+                                    <input  id="btn-input" type="text" ng-model="$parent.message" class="input1 form-control input-sm chat_input" placeholder="Write your message here..." on-enter="sendMessage(message)" ng-focus="IsTypingNow()" />
+                                    <span class="input-group-btn">
+                                    <button   class="btn btn-primary btn-sm" id="btn-chat"  ng-click="sendMessage(message)" translate="send"></button>
+                                    </span>
+                                </div>
+                                <div class="input-group" ng-if="toName=='Client'">
+                                    <input id="btn-input" type="text" ng-model="$parent.message" class="input1 form-control input-sm chat_input" placeholder="Write your message here..." on-enter="sendMessageBetweenClientAndSupplier(message)" />
+                                    <span  class="input-group-btn">
+                                        <button   class="btn btn-primary btn-sm" id="btn-chat"  ng-click="sendMessageBetweenClientAndSupplier(message)" >Send</button>
+                                    </span>
+                                </div>
+                              </div>
+                          </div>
+                     </div>
+                  </div>
+              </div>
+     </nav>
+            <!-- end navbar top -->
+            <!-- navbar side -->
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <!-- sidebar-collapse -->
+                <div class="sidebar-collapse">
+                    <!-- side-menu -->
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <!-- user image section-->
+                            <div class="user-section">
+                                <div class="user-section-inner profileImage">
+                                    <a href="settings/{{userId}}" ng-model="photo"><img ng-src="/userImage/{{photo}}" alt=""></a>
+                                </div>
+                                <div class="user-info">
+                                    <div ng-model="result">{{sharedDataUserName[1]}}</div>
+                                    <div class="user-text-online">
+                                        <span class="user-circle-online btn btn-success btn-circle" translate="online"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end user image section-->
+                        </li>
+                        <li id="posts" ng-class="{'selected': category === 1}">
+                            <a  id="posts" href="posts/{{userId}}" class="fa fas fa-home sideBarFontSize" translate="homePageAfterLogin" ng-click="changeCategory(1)"></a>
+                        </li>
+                        <li id="workTransactions" ng-class="{'selected': category === 2}">
+                            <a id="workTransactions" href="workTransactions/{{userId}}" class="fa fas fa-user-md sideBarFontSize" translate="employeeAndEmployer"  ng-click="changeCategory(2)"></a>
+                        </li>
+                        <li id="newsAndServices" ng-class="{'selected': category === 3}">
+                            <a href="newsAndServices/{{userId}}"  translate="dailyLifeHappenings" ng-click="activePage('#newsAndServices')" class="fa fas fa-headphones sideBarFontSize" ng-click="changeCategory(3)"></a>
+                        </li>
+                        <li id="trade" ng-class="{'selected': category === 4}">
+                            <a href="trade/{{userId}}" class="fa fas fa-shopping-cart sideBarFontSize" translate="thingsToSale" ng-click="changeCategory(4)"></a>
+                        </li>
+                        <li id="notification" ng-class="{'selected': category === 5}">
+                            <a href="notification/{{userId}}" class="fa far fa-bell sideBarFontSize" translate="notifications" ng-click="changeCategory(5)"></a>
+                        </li>
+                        <li id="groupChat" ng-class="{'selected': category === 6}">
+                            <a href="groupChat/{{userId}}" class="fa far fa-comments sideBarFontSize" translate="chatRoom" ng-click="changeCategory(6)"></a>
+                        </li>
+                        <li id="issues" ng-class="{'selected': category === 7}">
+                            <a class="fa fas fa-exclamation-circle sideBarFontSize" href="issues/{{userId}}" translate="issuesAndSuggestions" ng-click="changeCategory(7)"></a>
+                        </li>
+                         <li id="settings" ng-class="{'selected': category === 8}">
+                            <a href="settings/{{userId}}" class="fa fas fa-cogs sideBarFontSize" translate="userSettings" ng-click="changeCategory(8)"></a>
+                        </li>
+                        <li ng-if="permission=='admin'" ng-class="{'selected': category === 9}">
+                           <a href="admin/{{userId}}"  id="admin" ng-click="changeCategory(9)">Administrator</a>
+                           <a href="workList/{{userId}}" ng-click="activePage('workList')" ng-click="activePage('#workList')" id="workList">work list update</a>
+                       </li>
+                    </ul>
+                    <!-- end side-menu -->
+                </div>
+                <!-- end sidebar-collapse -->
+            </nav>
+            <!-- end navbar side -->
+            
+            
+          
+         
+           

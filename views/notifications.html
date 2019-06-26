@@ -1,0 +1,170 @@
+      <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header" translate="notification">Notifications</h3>
+            </div>
+            <span>
+                <button class="btn btn-primary" translate="messagesNotificationTranslate" ng-click="getUserMessages()">messages</button>
+                 <button class="btn btn-warning" translate="notificationsTranslation" ng-click="getUserNotifications()">Notifications</button>
+                  <button class="btn btn-danger" translate="friendRequestsTranslates" ng-click="getFriendRequests()">friend requests</button>
+                  <button class="btn btn-success" translate="yourfriends" ng-click="listMyFriends()">your firends</button>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li class="dropdown" ng-if="permission=='admin' || permission=='thingsToSale'">
+                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                 <span class="top-label label label-danger">{{numberOfMessagesInSaleClients}} </span><i class="fa fa-user fa-3x fa-shopping-cart"></i>
+                             </a>
+                             <ul class="dropdown-menu dropdown-messages scrollbarfriendRequestnotification" id="friendRequestnotification-1">
+                                 <li ng-repeat="saleThingsClient in saleItemNotice">
+                                               <div class='container2'>
+                                                 <div class="leftMargin">
+                                                 <h5><a href="#saleItemIdInfo" ng-click="getSaleItem()" data-toggle="modal">Talk about the item:{{saleThingsClient.saleItemId}}</a></h5>
+                                                 <div>
+                                                      <p><a href="#" ng-click="chatWithThisSaleClient(saleThingsClient.socketId,saleThingsClient.languageKey);myStyle={background:'lime'};" ng-style="myStyle">{{saleThingsClient.message}}-lets chat</a></p>
+                                                 </div>
+                                                 <div class="timingAtTopBar"><span am-time-ago="saleThingsClient.date"></span></div>
+                                               </div>
+                                      <li class="divider"></li>
+                                 </li>
+                                 <a href="" ng-if="friendRequests.length>6" ng-click="getFriendRequestsOnScrolling()" translate="seeMoreFriendRequest">see more friend requests.....</a>
+                             </ul>
+                        </li>
+                    </ul>
+            </span><hr>
+           <div class="col-lg-6">
+                <div class="panel panel-default scrollbarMessagenotification">
+                    <div class="panel-heading">
+                        <label ng-if="notificationTitle=='Messages'" ng-model="notificationTitle" translate="messageNotifications">{{notificationTitle}}</label>
+                         <label ng-if="notificationTitle=='Notifications'" ng-model="notificationTitle" translate="notificationsAtNofication">{{notificationTitle}}</label>
+                          <label ng-if="notificationTitle=='People connected with you'" ng-model="notificationTitle" translate="connectedPeopleWithU">{{notificationTitle}}</label>
+                           <label ng-if="notificationTitle=='Friend Requests'" ng-model="notificationTitle" translate="friendRequestAtNotification">{{notificationTitle}}</label>
+                    </div>
+                    <div class="panel-body" id="messagenotification-1">
+                         <ul class="list-group" ng-repeat="users in postUserInformation">
+                            <li class="list-group-item">
+                             <a href="" ng-click="letsChat(users.fromUserId,users.username,users.room,users.photo)"><span></span>&nbsp;<img ng-src="/userImage/{{users.photo}}" width="30" height="30">&nbsp;&nbsp;{{users.username}}</a> <button class="btn btn-circle pull-right" ng-click="deleteNotification(users.Id)">x</button>
+                             <div ng-if="notificationTitle=='Notifications'">
+                                 <p ng-if="languageKey=='TG'"> {{users.messageInTigrina}}</p>
+                                 <p ng-if="languageKey=='NL'"> {{users.message}}</p>
+                                 <p ng-if="languageKey=='EN'"> {{users.message}}</p>
+                             </div>
+                             <div ng-if="notificationTitle=='Messages'">
+                                 <p> {{users.message}}</p>
+                             </div>
+                             <div ng-if="notificationTitle=='Friend Requests'">
+                                 <p> {{users.message}}</p>
+                             </div>
+                             <div ng-if="notificationTitle=='People connected with you'">
+                                 <span ng-if="users.room!==null"><p translate="online" class="alert-success"></p></span>
+                                 <span ng-if="users.room==null">
+                                     <p translate="offline"></p>
+                                 </span>
+                                 <button class="btn btn-small pull-right" ng-click="blockFriend(users.Id)" translate="blockFriend"></button>
+                             </div>
+                             <hr>
+                             <span><a href="" ng-click="details(users.fromUserId,users.location)" translate="seeDetails">{{users.username}}</a></span> <span class="pull-right" am-time-ago="users.date"></span>
+                             </li>
+                        </ul>
+                    </div>
+                </div>
+           </div>
+           <div class="col-lg-6">
+             <div class="panel panel-default" ng-show="showDetails">
+                  <div class="panel-heading">
+                      <label translate="seeDetails"></label>
+                  </div>
+                   <div class="alert alert-warning fade in">
+                      <p ng-model="name" ng-if="name!==undefined" translate="fullName"></p><label>{{name}}</label>
+                      <p ng-model="gender" ng-if="gender!==undefined" translate="gender"></p><label>{{gender}}</label>
+                      <p ng-model="livesIn" ng-if="livesInNotification!==undefined" translate="livesIn"></p><label>{{livesInNotification}} {{countryNotification}}</label>
+                      <p ng-model="email" ng-if="email!==undefined" translate="email"></p><label>{{email}}</label>
+                      <p ng-model="workDetails" ng-if="workDetails!==undefinded" translate="workDetails"></p><label>{{workDetails}}</label>
+                      <p ng-model="timeTaken" ng-if="timeTaken!==undefined" translate="timeTaken"></p>
+                      <label>{{timeTaken}}</label>
+                      <p ng-model="lookingFor" ng-if="lookingFor!==undefined" translate="lookingFor"></p><label>{{lookingFor}}</label>
+                      <p ng-model="profession" ng-if="profession!==undefined" translate="profession"></p><label>{{profession}}</label>
+                      <p ng-model="workSession" ng-if="workSession!==undefined" translate="workSession"><label>{{workSession}}</label></p>
+                      <p ng-model="remarks" ng-if="remarks!==undefined" translate="remarks"></p><label>{{remarks}}</label>
+                      <p ng-model="userTelephone" ng-if="userTelephone!==undefined" translate="telephone"></p>
+                      <label>{{userTelephone}}</label>
+                      <p ng-model="date" ng-if="date!==undefined" translate="travellingDate"></p><label>{{date | date:'yyyy-MM-dd HH:mm'}}</label>
+                      <p ng-model="availabeTime" ng-if="availabeTime!==undefined" translate="availabeTime"></p>
+                      <label>{{availabeTime | date:'HH:mm' }} - {{availableTill | date:'HH:mm' }}</label>
+                      <p ng-model="fromPlace" ng-if="fromPlace!==undefined" translate="from"></p><label>{{fromPlace}}</label>
+                      <p ng-model="toPlace" ng-if="toPlace!==undefined" translate="to"></p><label>{{toPlace}}</label>
+                      <p ng-model="transportChoosed" ng-if="transportChoosed!==undefined" translate="transportChoosed"></p><label>{{transportChoosed}}</label>
+                      <p ng-model="ownerTransportType" ng-if="ownerTransportType!==undefined" translate="ownerTransportType">
+                         
+                      </p>
+                      <label>{{ownerTransportType}}</label> 
+                      <p ng-model="vehiclePhoto" ng-if="vehiclePhoto!==undefined"></p>
+                      <img  ng-if="vehiclePhoto!==undefined" src="/transportOwnerImages/{{vehiclePhoto}}" width="200" height="200">
+                   </div>
+             </div>
+           </div>
+           <div class="container" id="mydiv" ng-show="chatbox">
+             <div class="row chat-window col-xs-6 col-sm-3 col-md-4 col-lg-4 chatWindow" id="chat_window_1">
+               <div class="col-xs-12 col-md-12">
+                    <div class="panel panel-default">
+                        <div class=" chatHeader panel-heading top-bar">
+                            <div class="col-md-8 col-xs-8">
+                                 <h3 class="panel-title" ng-model="toName"><span><img src="/assets/img/icons8-Chat-48.png"></span>{{toName}}
+                                 </h3>
+                            </div>
+                            <div id="messageBody" class="col-md-4 col-xs-4 messageBody">
+                                <p ng-if="toName!=='Client'">
+                                  <button id="minim_chat_window1" class="btn btn-circle icon_minim btn-danger" ng-click="minimizChat()">{{chatSizedTo}}</button>&nbsp;&nbsp;<button class="btn btn-circle btn-danger closeChatIcon" ng-click="closeChat(toName)">X</button>
+                                </p>
+                                <p ng-if="toName=='Client'"> <button id="minim_chat_window1" class="btn btn-circle btn-danger icon_minim" ng-click="minimizChat()">{{chatSizedTo}}</button>&nbsp;&nbsp;<button class="btn btn-circle closeChatIcon btn-danger" ng-click="closeChatWithSupplier()">X</button></p>
+                            </div>
+                        </div>
+                        <div class="panel-body msg_container_base"  id="chatbox1">
+                            <div ng-show="hideChat" ng-repeat="user in minimizedData" class="row msg_container base_receive" chatbox1-scroll-bottom="ngRepeatFinished">
+                             <div>
+                                  <div class="col-md-2 col-xs-2 avatar" ng-if="toName!=='Client'">
+                                    <img ng-src="/userImage/{{user.photo}}" class=" img-responsive ">
+                                </div>
+                               <div  class="col-md-10 col-xs-10">
+                                  <div  class="messages msg_receive">
+                                     <p style="font-size:14px;" ng-if="toName!=='Client'">{{user.message}}</p>
+                                     <p  class="userMessage" ng-if="toName=='Client'">{{user.message}}</p>
+                                    <small class="label label-info ng-binding ng-if="toName=='Client'">{{user.username}}</small> <span am-time-ago="user.date"></span>
+                                  </div>
+                               </div>
+                             </div>
+                            </div>
+                           <div ng-hide="showChat" ng-repeat="user in postUserMessagesFromChat" class="row msg_container base_receive" chatbox1-scroll-bottom="ngRepeatFinished">
+                             <div>
+                                  <div class="col-md-2 col-xs-2 avatar" ng-if="toName!=='Client'">
+                                    <img ng-src="/userImage/{{user.photo}}" class=" img-responsive ">
+                                </div>
+                               <div  class="col-md-10 col-xs-10">
+                                  <div  class="messages msg_receive">
+                                     <p style="font-size:14px;" ng-if="toName!=='Client'">{{user.message}}</p>
+                                     <p  class="userMessage" ng-if="toName=='Client'">{{user.message}}</p>
+                                    <small class="label label-info ng-binding ng-if="toName=='Client'">{{user.username}}</small> <span am-time-ago="user.date"></span>
+                                  </div>
+                               </div>
+                             </div>
+                            </div>
+                            <p style="font-size:5;color:#ef6ede;" class="alert-info">{{isTyping}}</p>
+                        </div>
+                        <div class="panel-footer chatboxFooter">
+                          <div class="input-group" ng-if="toName!=='Client'">
+                              <input  id="btn-input" type="text" ng-model="$parent.message" class="input1 form-control input-sm chat_input" placeholder="Write your message here..." on-enter="sendMessage(message)" ng-focus="IsTypingNow()" />
+                              <span class="input-group-btn">
+                              <button   class="btn btn-primary btn-sm" id="btn-chat"  ng-click="sendMessage(message)" translate="send"></button>
+                              </span>
+                          </div>
+                          <div class="input-group" ng-if="toName=='Client'">
+                              <input id="btn-input" type="text" ng-model="$parent.message" class="input1 form-control input-sm chat_input" placeholder="Write your message here..." on-enter="sendMessageBetweenClientAndSupplier(message)" />
+                              <span  class="input-group-btn">
+                                  <button   class="btn btn-primary btn-sm" id="btn-chat"  ng-click="sendMessageBetweenClientAndSupplier(message)" >Send</button>
+                              </span>
+                          </div>
+                        </div>
+                    </div>
+               </div>
+             </div>
+           </div>
+        </div>
+    </div>

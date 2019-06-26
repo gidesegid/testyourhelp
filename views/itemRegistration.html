@@ -1,0 +1,226 @@
+
+        <div id="page-wrapper">
+            <div class="row" ng-controller="thingsToSaleController">
+                <div class="col-lg-12" ng-hide="myListOfItems"><hr>
+                        <h3 class="modal-title" translate="saleThingsPost"></h3>
+                        <hr>
+                        <span ng-if="userOrderId==undefined">
+                            <button class="btn btn-warning"> <a href="#saleItemPaymentModal" data-toggle="modal" style="color:white;" translate="saleItemPayment"></a></button>
+                        </span>
+                        <div class="modal" id="saleItemPaymentModal" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                                          <div class="modal-dialog model-lg">
+                                              <div class="modal-content">
+                                                 <div class="modal-header">
+                                                   <button class="close" data-dismiss="modal">&times;</button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                    <form role="form" method="post" action="/getMolliePayments">
+                                                         <input type="hidden" name="languageKey" value="{{languageKey}}">
+                                                        <input type="hidden" name="theRequestComesFrom" value="users">
+                                                        <label translate="amountToPay"></label>:10
+                                                        <input type="hidden" class="form-control" name="amount" value="10"><br>
+                                                        <input type="hidden" class="form-control" name="userId" value="{{userId}}"><br>
+                                                         <label translate="name">name</label>
+                                                        <input type="text" class="form-control" name="name" required>
+                                                        <label translate="surName" >sur name</label>
+                                                        <input type="text" name="surName" class="form-control" required>
+                                                        <label translate="email" >email</label>
+                                                        <input type="email" name="email" class="form-control" required>
+                                                        <label translate="telephone" >telephone</label>
+                                                        <input type="tele" name="telephone" class="form-control" required>
+                                                        <label translate="country" >country</label>
+                                                        <input type="text" name="country" class="form-control" value="{{country}}">
+                                                        <label translate="city">city</label>
+                                                        <input type="text" name="city" class="form-control" value="{{livesIn}}">
+                                                        <label translate="postCode">post code</label>
+                                                        <input type="text" class="form-control" name="postCode" required>
+                                                        <label translate="street"></label>
+                                                        <input type="text" name="street" class="form-control" required>
+                                                        <label translate="houseNumber"></label>
+                                                        <input type="text" name="houseNumber" class="form-control" required><br>
+                                                        <p translate="payNow"></p>
+                                                        <button type="submit"  class="btn btn-success" value="Pay" ></button>
+                                                    </form>
+                                                  </div>
+                                              </div>
+                                          </div>
+                        </div>
+                        <div>
+                            <span class="alert-info"><a href="" ng-click="showList()" translate="goToMyItemsList">list</a></span>
+                        </div>
+                        <div class="col-lg-6">
+                                 <input type="hidden" name="userId"  value="{{sharedDataUserName[0]}}">
+                                 <label translate="itemName"></label>
+                                 <input type="text" ng-model="itemName" name="itemName" class="form-control" placeholder="Item name" required>
+                                 <label translate="catagories"></label>
+                                   <p ng-if="languageKey=='TG'">
+                                    <p></p>
+                                     <select  id="saleThings" class="form-control" ng-model="category" ng-change="getCategoryId(category)" required>
+                                        <option  ng-repeat="category in salethingsCategoriesList | filter:filterBy" value="{{category.Id}}">{{category.tigrina}}</option>
+                                     </select>
+                                   </p>
+                                   <p ng-if="languageKey=='NL'">
+                                     <select  id="saleThings" class="form-control" ng-model="category" ng-change="getCategoryId(category)" required>
+                                        <option  ng-repeat="category in salethingsCategoriesList | filter:filterBy" value="{{category.Id}}">{{category.dutch}}</option>
+                                     </select>
+                                   </p>
+                                   <p ng-if="languageKey=='EN'">
+                                     <select  id="saleThings" class="form-control" ng-model="category" ng-change="getCategoryId(category)" required>
+                                        <option ng-repeat="category in salethingsCategoriesList | filter:filterBy" value="{{category.Id}}">{{category.english}}</option>
+                                     </select>
+                                   </p>
+                                  <label translate="price"></label><input type="text" name="price" ng-model="price" class="form-control">
+                                  <label translate="unit"></label><select  ng-model="unit" class="form-control" name="unit" ng-change="catagoriesChoosed()" ng-model="unit" required>
+                                   <option>Euro</option>
+                                   </select>
+                                   <label translate="where"></label>
+                                   <!-- <input type="text" ng-model="place" class="form-control" required> -->
+                                   <autocomplete ng-model="place" attr-placeholder=" in city..." city-enter="onEnter()" click-activation="true" data="cityDatas"  on-type="fillToCityAtThingsToSellRegistration" on-select="cityWhere"></autocomplete>
+                                   <span class="alert-danger">{{citySelectionAtItemRegistration}}</span><br>
+                                   <label translate="telephone"></label><input type="text" ng-model="telephone" class="form-control" ng-focus="checkCitySelection()" required>
+                                   <label translate="description"></label><textarea ng-model="description" col="100" row="10" class="form-control" required></textarea>
+                                    <button type="button" name="button" ng-click="uploadCropedImage()" class="btn btn-primary" translate="registerItem" ng-disabled="itemRegistrationButtonDisable"></button> <button ng-click="newItemToSale()" translate="newItemToSaleButton" class="btn btn-warning">add new item</button>
+                                    <p style="color:red;" ng-model="alertUploadImage">{{alertUploadImage}}</p>
+                                    <input type="hidden" ng-model="itemId" value="">
+                                     <div ng-show="itemQuantity" class="alert-warning">
+                                       <label for="" style="color:green">{{addSuccess}}</label><br>
+                                       <label translate="itemSize">size</label><br>
+                                       <input type="text" ng-model="itemSize" placeholder="cm,m,kg,g,pcs,pack,lit....etc" ><br>
+                                       <label translate="itemAmount">amount</label><br>
+                                       <input type="number" ng-model="itemAmount" placeholder=""><br>
+                                       <button type="button" name="button" ng-click="addItem(itemAmount,itemSize)" ng-disabled="addButton" translate="addSaleItemButton" class="btn btn-primary">add</button>
+                                     </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <p translate="itemImage">Item image</p><p style="color:red;" ng-model="alertUploadImage">{{alertUploadImage}}</p> <input type="hidden" ng-model="imageUploaded"  value="{{imageUploaded}}">
+                            <input type="file" id="fileInput"/>
+                            <div class="pull-right">
+                                <img-crop image="myImage" class="cropArea" result-image="myCroppedImage"></img-crop>
+                            </div>
+                            <div class="profileImage">
+                             <label translate="itemWillBeLookingLikeThis">item will be looking like this</label>
+                             <img ng-src="{{myCroppedImage}}" name="myFile1" width="300" height="300"/>
+                            </div>
+                        </div>
+                </div>
+                <div ng-show="myListOfItems">
+                        <div>
+                             <h3 class="modal-title" translate="saleThingsPost"></h3>
+                             <hr>
+                        </div>
+                        <div>
+                            <span class="alert-warning"><a href="" ng-click="showList()" translate="backToItemRegistration">back to registration</a></span>
+                        </div>
+                        <hr>
+                        <span class="alert-warning" translate="itemsThatHasRegisteredByUser">Items that you have registered</span>
+                           <div class="table-responsive">
+                                <table  class="table mainTable">
+                                            <thead class="columnOfTable">
+                                                <tr>
+                                                    <th scope="col" translate="itemName"></th>
+                                                    <th translate="price"></th>
+                                                    <th translate="unit"></th>
+                                                    <th translate="livesIn"></th>
+                                                    <th translate="telephone"></th>
+                                                    <th translate="description"></th>
+                                                    <th translate="size"></th>
+                                                    <th translate="amount"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody ng-repeat="data in itemsForSale">
+                                                <tr>
+                                                     <td>{{data.ItemName}} <img ng-src="/saleThingsImageCollector/{{data.ItemFileName}}" width="30" height="30">
+                                                        <p translate="itemForSellRegistrationDate"></p>
+                                                        <small class="alert-info">{{data.ItemRegistrationDate | date:'yyyy-MM-dd HH:mm'}}</small><br>
+                                                        <small am-time-ago="data.buyingDate" class="alert-info"></small>
+                                                      </td>
+                                                     <td>{{data.itemPrice}}</td>
+                                                     <td>{{data.itemPriceUnit}}</td>
+                                                     <td>{{data.ItemPlace}}</td>
+                                                     <td>{{data.ItemTelephone}}</td>
+                                                     <td>{{data.ItemDescription}}</td>
+                                                     <td>{{data.ItemSize}}</td>
+                                                     <td>{{data.ItemAmount}}</td>
+                                                </tr>
+                                            <tbody>
+                            </table>
+                            <hr>
+                            <span class="alert-warning" translate="itemsThatHasBeenSold"> sold items</span><br>
+                            <button ng-click="getSoldItems()" class="btn btn-primary" translate="buttonGetSoldItems">get Sold Items</button>
+                            <table class="table mainTable">
+                                            <thead class="columnOfTable">
+                                                <tr>
+                                                    <th translate="SoldItemId">SoldItemId</th>
+                                                    <th translate="itemName">itemName</th>
+                                                    <th translate="price"></th>
+                                                    <th translate="unit"></th>
+                                                    <th translate="size"></th>
+                                                    <th translate="numberOfItemsSold">numberOfItemsSold</th>
+                                                    <th translate="totalNumberOfItemsLeft">totalNumberOfItemsLeft in store</th>
+                                                    <th translate="totalPriceAmount">totalPriceAmount</th>
+                                                    <th translate="boughtDate">boughtDate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody ng-repeat="data in soldItemsData">
+                                                <tr>
+                                                    <td>{{data.SoldItemId}}</td>
+                                                    <td>{{data.itemName}}</td>
+                                                    <td>{{data.itemPrice}}</td>
+                                                    <td>{{data.priceUnit}}</td>
+                                                    <td>{{data.itemSize}}</td>
+                                                    <td>{{data.numberOfItemsSold}}</td>
+                                                    <td>{{data.totalNumberOfItemsLeft}}</td>
+                                                    <td>{{data.totalAmount}}</td>
+                                                    <td>{{data.boughtDate | date:'yyyy-MM-dd HH:mm'}}<br> <small am-time-ago="data.boughtDate" class="alert-info"></small></td>
+                                                </tr>
+                                            <tbody>
+                                            <tfoot>
+                                            </tfoot>
+                            </table>
+                             <hr>
+                            <span class="alert-warning" translate="customersBoughtItems">Customers</span><br>
+                            <button ng-click="getCustomersWhoBoughtMyItems()" class="btn btn-primary" translate="buttonGetCustomersWhoBoughtItem">Customer</button>
+                            <table class="table mainTable">
+                                
+                                            <thead class="columnOfTable">
+                                                <tr>
+                                                    
+                                                    <th translate="sellId">sell id</th>
+                                                    <th translate="name">customerName</th>
+                                                    <th translate="country">country</th>
+                                                    <th translate="city">city</th>
+                                                    <th translate="postCode">post code</th>
+                                                    <th translate="street">street</th>
+                                                    <th translate="houseNumber">house number</th>
+                                                    <th translate="telephone">telephone</th>
+                                                    <th translate="email">email</th>
+                                                    <th translate="boughtDate">bought date</th>
+                                                    <th translate="numberOfItemsBought">numberOfItemsBought</th>
+                                                    <th translate="itemName">itemName</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody ng-repeat="data in customers">
+                                                <tr>
+                                                    <td>{{data.sellId}}</td>
+                                                    <td>{{data.customerName}}</td>
+                                                    <td>{{data.customerCountry}}</td>
+                                                    <td>{{data.customerCity}}</td>
+                                                    <td>{{data.customerPostcode}}</td>
+                                                    <td>{{data.customerStreet}}</td>
+                                                    <td>{{data.housenumber}}</td>
+                                                    <td>{{data.telephone}}</td>
+                                                    <td>{{data.email}}</td>
+                                                    <td>{{data.buyingDate | date:'yyyy-MM-dd HH:mm'}}<br> <small am-time-ago="data.buyingDate" class="alert-info"></small></td>
+                                                    <td>{{data.numberOfItemsBought}}</td>
+                                                    <td>{{data.itemName}}</td>
+                                                </tr>
+                                            <tbody>
+                                            <tfoot>
+                                            </tfoot>
+                            </table>
+                           </div>
+
+                </div>
+            </div>
+   
+    

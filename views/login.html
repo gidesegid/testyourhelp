@@ -1,0 +1,130 @@
+
+  
+  <div  class="container index backgroundColor">
+            <div ng-hide="LoginBox" class="login box-containerLogin col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                        <div>
+                            <h3 class="login-heading loginHeadTitle" translate="loginHeadline">Login</h3>
+                        </div>
+                        <!-- User name Text Field -->
+                        <div class="input-group username-group">
+                            <span class="input-group-addon iconbg">
+                            <i class="glyphicon glyphicon-user"></i>
+                            </span>
+                            <input id="login-username" type="text" ng-model="username" class="form-control inputbg" name="username" value="" placeholder="username          መጠቀሚ ስም">
+                        </div>
+                        <!-- Password Text Field -->
+                        <div class="input-group password-group">
+                            <span class="input-group-addon iconbg">
+                            <i class="glyphicon glyphicon-lock"></i>
+                            </span>
+                            <input id="login-password" type="password" ng-model="password" class="form-control inputbg" name="password" placeholder="password           ቃለ ምስጢር">
+                        </div>
+                        <!-- ALert Box For Wrong Usernme and password combination -->
+                        <div class="alert-group" ng-show="LoginAlert">
+                            <div class="alert alert-danger">
+                            <p translate="wrongUserNameOrPassword"></p>
+                            </div>
+                        </div>
+                       
+                        <!-- Button to Login -->
+                        <div class="input-group">
+                          <button translate="loginButton" ng-click="submitLogin()" id="btn-login" class="btn btn-login btnbg">
+                            Login
+                          </button><br>
+                           <p class="pull-right"><a href="#" ng-click="forgetPasswordForm()" translate="forgetPassword" class="forgetPasswordLabel">forget password</a></p>
+                        </div>
+                        <div class="signup-box">
+                            <h4><span><a href="" class="fa fa-registered registerLabel" aria-hidden="false" ng-click="toggle_register();getUserGender();" translate="signup">SignUp</a></span></u></h4>
+                        </div>
+                        <!-- ALert Box For Wrong Usernme and password combination -->
+                        <div class="alert-group" ng-show="signUpAlert">
+                            <div class="alert alert-success">
+                            <p translate="successfullyRegistered"></p>
+                            <p translate="activationStatusAlert"></p>
+                            </div>
+                        </div>
+                        <div class="alert-group" ng-show="accountActivationAlert">
+                            <div class="alert alert-success">
+                            <p translate="activationStatusAlert"></p>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="loginForgetPassword  col-lg-3 col-md-3 col-xs-6 col-sm-6" ng-show="forgetPassword">
+                                <label translate="email"></label><br>
+                                <input type="text" ng-model="email"><br><br>
+                                <button type="button" name="button"  ng-click="checkUserInDatabase()" translate="changePassword"></button><br><br>
+                                <label for="">{{noSuchUser}}</label>
+                                <a href="#" ng-click="backToLogin()" translate="BackToLogin"></a>
+                  </div>
+                  <!-- Registration Box starts  -->
+                      <div ng-show="RegisterBox" class="register box-containerRegistration  col-md-4 col-md-4 col-sm-4 col-xs-6">
+                         
+                          <!-- <h4 class="login-heading" translate="register">Register</h4> -->
+                                <form name="userForm" novalidate >
+                                  <a href="#" ng-click="toggle_login()" translate="alreadyHaveAccount" class="alreadyHaveAccount" class="pull-right fa fa-sign-out fa_custom fa-1x"></a><br>
+                                     <label translate="fullName"></label>
+                                     <input type="text" class="form-control" ng-model="name"  name="name" required>
+                                     <label translate="username"></label>
+                                     <input type="text" class="form-control" ng-model="username"  name="username" required="">
+                                      <p id="username"></p>
+                                      <label translate="email"></label>
+                                       <input type="email" class="form-control"  ng-model="email" ng-focus="checkUserName()"  name="email" required>
+                                       <label translate="password"></label>
+                                       <input type="password" class="form-control" ng-model="password" ng-minlength="6"  name="password" ng-focus="checkUserEmail()" required>
+                                       <label translate="repeatPassword"></label>
+                                       <input type="password"  class="form-control" ng-model="password2" placeholder="repeat password" name="password2" required>
+                                        <label translate="dateOfBirth"></label>
+                                        <input type="date" id="dateId" ng-model="userBirthDate"  required="True" ><br>
+                                          <label  translate="gender"></label>
+                                          <span ng-if="languageKey==null">
+                                              <select ng-model="$parent.userGender" ng-change="changeGender(userGender.Id,userGender.english)"
+                                                ng-options="userGender as userGender.english for userGender in userGenderModel">
+                                             </select>
+                                          </span>
+                                           <span ng-if="languageKey=='EN'">
+                                              <select ng-model="$parent.userGender" ng-change="changeGender(userGender.Id,userGender.english)"
+                                                ng-options="userGender as userGender.english for userGender in userGenderModel">
+                                             </select>
+                                            </span>
+                                             <span ng-if="languageKey=='TG'">
+                                              <select ng-model="$parent.userGender" ng-change="changeGender(userGender.Id,userGender.english)"
+                                                ng-options="userGender as userGender.tigrina for userGender in userGenderModel">
+                                             </select>
+                                          </span>
+                                           <span ng-if="languageKey=='NL'">
+                                              <select ng-model="$parent.userGender" ng-change="changeGender(userGender.Id,userGender.english)"
+                                                ng-options="userGender as userGender.dutch for userGender in userGenderModel">
+                                             </select>
+                                          </span><br>
+                                          <div>
+                                             <span class="alert-danger pull-right">{{unfilledFields}}</span>
+                                             <label translate="country"></label>
+                                             <a href="" ng-click="loadCountries()" class="loadCountries pull-right" translate="loadCountry">Load countries</a>
+                                             <select class="form-control" ng-model="countryAtRegistration" ng-change="chooseCountryAtRegistration(countryAtRegistration.Id,countryAtRegistration.country)"
+                                                ng-options="country as country.country for country in countries">
+                                             </select>
+                                          </div>
+                                          <div>
+                                            <label translate="city"></label>
+                                             <a href="" ng-click="loadCities()" class="loadCities pull-right" translate="loadCities">Load cities</a>
+                                            <select class="form-control" ng-model="citiesAtRegistration" ng-change="chooseCityAtRegistration(citiesAtRegistration.id,citiesAtRegistration.cityName)"
+                                                ng-options="city as city.cityName for city in cities">
+                                             </select>
+                                          </div>
+                                           </select>&nbsp;&nbsp;<input type="checkbox" ng-model="notStatedHere"><span translate="notStatedHere"></span>
+                                           <div ng-show="notStatedHere">
+                                             <label translate="writeCityNameWhereULive"></label>
+                                             <input type="text" ng-model="city" value="city.cityName">
+                                           </div><br>
+                                           <input type="checkbox" ng-model="agreementOkChecked" ng-click="checkedTrue()"><span translate="IAgree">I agree</span>&nbsp;<a href="agreementFile"  translate="generalRullsAndRecommendations" ng-click="getAgreementFile()">general rulls and recommendations</a> <br>
+                                       <button  class="btn btn-default" ng-click="register()" translate="userRegisterButton" ng-disabled="registerButtonDisabled">Submit</button><br><a href="#" ng-click="toggle_login()" translate="alreadyHaveAccount" class="alreadyHaveAccount"></a>
+                                       
+                                 </form>
+                      </div>
+            </div>
+
+    
+
+  </div>
+

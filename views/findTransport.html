@@ -1,0 +1,363 @@
+
+            <!--  page-wrapper -->
+          <div id="page-wrapper">
+            <div><br>
+              <h3 class="page-header" translate="transportAndTravelSchedules">Activities: Transports and travel schedules</h3><a href="newsAndServices/{{userId}}" class="pull-right" translate="backToDailyLifeHomePage"></a>
+                    <p id="reactionAlert"  ng-model="result">{{result}}</p>
+                     <div class="modal" id="paymentModal" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                          <div class="modal-dialog model-lg">
+                              <div class="modal-content">
+                                 <div class="modal-header">
+                                  <button class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                  <div class="modal-body">
+                                    <form role="form" method="post" action="/getMolliePayments">
+                                         <input type="hidden" name="languageKey" value="{{languageKey}}">
+                                        <input type="hidden" name="theRequestComesFrom" value="transporttype">
+                                        <label translate="amountToPay"></label>:20
+                                        <input type="hidden" class="form-control" name="amount" value="20"><br>
+                                        <input type="hidden" class="form-control" name="userId" value="{{userId}}"><br>
+                                        <label translate="name">name</label>
+                                        <input type="text" class="form-control" name="name" required>
+                                        <label translate="surName" >sur name</label>
+                                        <input type="text" name="surName" class="form-control" required>
+                                        <label translate="email" >email</label>
+                                        <input type="email" name="email" class="form-control" required>
+                                        <label translate="telephone" >telephone</label>
+                                        <input type="tele" name="telephone" class="form-control" required>
+                                        <label translate="country" >country</label>
+                                        <input type="text" name="country" class="form-control" value="{{country}}">
+                                        <label translate="city">city</label>
+                                        <input type="text" name="city" class="form-control" value="{{livesIn}}">
+                                        <label translate="postCode">post code</label>
+                                        <input type="text" class="form-control" name="postCode" required>
+                                        <label translate="street"></label>
+                                        <input type="text" name="street" class="form-control" required>
+                                        <label translate="houseNumber"></label>
+                                        <input type="text" name="houseNumber" class="form-control" required>
+                                        <input type="submit" translate="payNow" class="btn btn-success" value="pay 20 Euro" >
+                                    </form>
+                                  </div>
+                              </div>
+                          </div>
+                    </div>
+                    <div class="modal" id="notReadyYet" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                      <div class="modal-dialog model-lg">
+                          <div class="modal-content">
+                             <div class="modal-header">
+                              <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                              <div class="modal-body">
+                                <span ng-if="languageKey=='TG'">
+                                    <p>ይቕረታ ግበሩልና፣እዛ ወብሳይት እዚኣ ኣብዚ እዋን ዚ ስርሓ ስለዘይጀመረት ቁሩብ መዓልታት ክትዕገሱና ኢኹም።</p><br>
+                                    <input type="checkbox" ng-click="sendMeEmail()">ስራሕ ኣብ ዝጀመረሉ መዘኻኸሪ ናብ ኢመይለይ ክስደደለይ ይደሊ ኢየ። <br>
+                                    <p class="alert-success">{{reminderResult}}</p>
+                                </span>
+                                <span ng-if="languageKey=='NL'">
+                                    <p>Sorry! Deze website is nog niet gestart</p><br>
+                                    <input type="checkbox" ng-click="sendMeEmail()">Herinner me eraan wanneer ik begonnen <br>
+                                    <p class="alert-success">{{reminderResult}}</p>
+                                </span>
+                                <span ng-if="languageKey=='EN'">
+                                    <p>Sorry! This website is not yet started</p><br>
+                                    <input type="checkbox" ng-click="sendMeEmail()" ng-model="remind">Remind me when started. <br>
+                                    <p class="alert-success">{{reminderResult}}</p>
+                                </span>
+                              </div>
+                          </div>
+                      </div>
+                     </div>
+                    <div class="modal" id="travelRegistration" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                        <div class="modal-dialog model-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                  <button class="close" data-dismiss="modal">&times;</button>
+                                   <h4 class="modal-title" ></h4>
+                                   <p id="reactionAlert" class="alert alert-info myalert"></p>
+                                </div>
+                                   <div class="modal-body">
+                                    <form role="form" ng-hide="val" name="transportForm" novalidate>
+                                     <input type="hidden" ng-model="id" class="form-control">
+                                     <label translate="transportType">Transport type:</label><span ng-model="transportChoosed" style="color:red;">:{{transportChoosed}} <a href="" ng-click="changeTransportType()" translate="changeTypeOfTransport">change type of transport</a></span><br>
+                                      
+                                     <div ng-if="transportChoosed==null">
+                                            <span ng-if="languageKey==null">
+                                              <select class="form-control"  ng-model="$parent.transport" ng-change="changeTransport(transport.Id)"
+                                                ng-options="transport as transport.english for transport in transports" ng-focus="transportSelectionFocus()">
+                                             </select>
+                                           </span>
+                                           <span ng-if="languageKey=='EN'">
+                                              <select class="form-control"  ng-model="$parent.transport" ng-change="changeTransport(transport.Id)"
+                                                ng-options="transport as transport.english for transport in transports">
+                                             </select>
+                                            </span>
+                                             <span ng-if="languageKey=='TG'">
+                                              <select  class="form-control" ng-model="$parent.transport" ng-change="changeTransport(transport.Id)"
+                                                ng-options="transport as transport.tigrina for transport in transports">
+                                             </select>
+                                          </span>
+                                           <span ng-if="languageKey=='NL'">
+                                              <select class="form-control"  ng-model="$parent.transport" ng-change="changeTransport(transport.Id)"
+                                                ng-options="transport as transport.dutch for transport in transports">
+                                             </select>
+                                          </span>
+                                     </div>
+                                   
+                                   <label translate="from"></label>
+                                   <autocomplete ng-model="fromCityAtTravellerRegistration" attr-placeholder=" from city..." city-enter="onEnter()" click-activation="true" data="cityDatas"  on-type="fillFromCityAtTravellerRegistration" on-select="cityFromSelection"></autocomplete><br>
+                                   <label translate="to">To:</label>
+                                   <autocomplete ng-model="toCityAtTravellerRegistration" attr-placeholder=" to city..." city-enter="onEnter()" click-activation="true" data="cityDatas"  on-type="fillToCityAtTravellerRegistration" on-select="cityToSelection"></autocomplete>
+                                   <label translate="date">Date:</label><input type="Date" id="dateId" ng-model="passengerTravelDate" class="form-control" name="date" required>
+                                   <label translate="fromTime">what time </label><input type="text"  ng-model="fromTime" class="form-control"  required>
+                                   <label translate="telephone">Tele:</label>
+                                   <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id="teleId" ng-model="telephone" class="form-control" name="tele" ng-minlength="8" ng-maxlength="14" required>
+                                    <p ng-show="transportForm.tele.$error.minlength">not valid number</p>
+                                    <p ng-show="transportForm.tele.$error.maxlength">not valid number</p>
+                                    <label translate="code">code:</label><input type="text" ng-model="code" class="form-control" ng-readonly="true">
+                                    <button  data-dismiss="modal" id="submitId" ng-disabled="transportForm.$invalid"  ng-click="contactTransportSubmition()" class="btn btn-primary">submit</button>
+                                </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12" ng-hide="showTransportSearch">
+                            <div class="col-lg-3 searchJourney" style="background-color:rgb(160, 185, 219);">
+                                <label translate="date">Date:</label><input type="Date" ng-model="dateAtSearching" class="form-control">
+                                <label translate="from"></label>
+                                <autocomplete ng-model="fromCitySearchFormAtTransport" attr-placeholder=" from city..." city-enter="onEnter()" click-activation="true" data="cityDatas"  on-type="fillFromCity" on-select="cityFromSelection"></autocomplete>
+                                <label translate="to">To:</label>
+                                <autocomplete ng-model="toCitySearchFormAtTransport" attr-placeholder=" to city..." city-enter="onEnter()" click-activation="true" data="cityDatas"  on-type="fillToCity" on-select="cityToSelection"></autocomplete>
+                                <label translate="by">By</label>
+                                <span ng-if="languageKey==null">
+                                    <select class="form-control"  ng-model="$parent.transport" ng-change="changeTransport(transport.Id,transport.english)"
+                                      ng-options="transport as transport.english for transport in transports">
+                                   </select>
+                                </span>
+                                <span ng-if="languageKey=='EN'">
+                                  <select class="form-control"  ng-model="$parent.transport" ng-change="changeTransport(transport.Id,transport.english)"
+                                    ng-options="transport as transport.english for transport in transports">
+                                 </select>
+                                </span>
+                                <span ng-if="languageKey=='TG'">
+                                  <select class="form-control"  ng-model="$parent.transport" ng-change="changeTransport(transport.Id,transport.tigrina)"
+                                    ng-options="transport as transport.tigrina for transport in transports">
+                                 </select>
+                                </span>
+                                <span ng-if="languageKey=='NL'">
+                                  <select class="form-control"  ng-model="$parent.transport" ng-change="changeTransport(transport.Id,transport.dutch)"
+                                    ng-options="transport as transport.dutch for transport in transports">
+                                </select>
+                                </span>
+                                <button class="btn-primary" ng-click="detailTravelInfo()" translate="seeTravelInfo"></button><br><br>
+                             </div>
+                             <div class="col-lg-9 alert alert-warning fade in">
+                                 <div class="alert-warning"><hr>
+                                   <span translate="registerToTravelByAnyTransport"> </span>&nbsp;&nbsp;
+                                  <button class="btn btn-warning">
+                                       <a href="#travelRegistration" data-toggle="modal" ng-click="myInfoAsPassenger()" translate="clickHere"></a>
+                                  </button>
+                                   <hr>
+                                      <div>
+                                        <span ng-if="transportOwnerOrderId==undefined"> <a href="#notReadyYet" data-toggle="modal" translate="transportRegistrationPaymentLink"></a> </span>
+                                        <span  ng-if="transportOwnerOrderId!==undefined" translate="transportRegistration">
+                                        </span>
+                                         &nbsp;&nbsp;
+                                       <button class="btn btn-warning">
+                                            <a ng-if="transportOwnerOrderId!==undefined" href="#"  ng-click="getTransportOwnerInfo();showTransportRegistrationArea();" translate="clickHere"></a>
+                                       </button>
+                                      </div>
+                                 </div>
+                                 <hr>
+                                  <p ng-if="hasPassengerRequests=='yes'">
+                                  <button type="button" name="button" ng-click="whoAcceptMyRequest()" translate="whoAcceptedMe" class="btn btn-primary">who accepted my requests</button></p>
+                                  <span ng-modal="noAcceptanceYet">{{noAcceptanceYet}}</span>
+                                  <span ng-if="whoAcceptedMe.length!==0">
+                                      <ul ng-repeat="owners in whoAcceptedMe">
+                                         <img  ng-src="/userImage/{{owners.photo}}" width="20" height="20">{{owners.name}}&nbsp;&nbsp; <span>{{owners.approvedDate | date:'yyyy-MM-dd HH:mm'}} <small class="pull-right" am-time-ago="owners.approvedDate"></small></span>
+                                         <li><label translate="gender"></label>:{{owners.gender}}&nbsp;&nbsp;&nbsp;&nbsp; <label translate="telephone"></label>:{{owners.telephone}}<br>
+                                           <label translate="transportType">transport type:</label>:&nbsp;&nbsp;{{owners.type}}&nbsp;&nbsp;<label translate="numberOfSeats">number of seats</label>:&nbsp;&nbsp;{{owners.numberOfSeats}}<br>
+                                           <label translate="date">date</label>:&nbsp;&nbsp;{{owners.date | date:'yyyy-MM-dd HH:mm'}}&nbsp;&nbsp;<label translate="fromTime"></label>:&nbsp;&nbsp;{{owners.fromTime | date:'HH:mm'}} <label translate="toTime"></label>:&nbsp;{{owners.toTime | date:'HH:mm'}}<br>
+                                           <label translate="from">from place</label>:&nbsp;&nbsp;{{owners.fromPlace}}&nbsp;&nbsp;<label translate="to">to place</label>:&nbsp;&nbsp;{{owners.toPlace}}<br>
+                                           <label translate="additionalInfo">to place</label><br>
+                                           <p class="alert alert-success">{{owners.additionalInfo}}</p>
+                                         </li>
+                                      </ul>
+                                  </span><br>
+                                  <span ng-if="hasTransportOwnerBeenRequested=='yes'">
+                                    <button type="button" name="button" ng-click="getAllRequests()" translate="getAllRequests" class="btn btn-primary">get request</button><br>
+                                     <span ng-modal="noRequesteToTransportOwner">{{noRequesteToTransportOwner}}</span><br>
+                                    <span ng-if="allRequests.length!==0">
+                                      <ul ng-repeat="requests in allRequests">
+                                        <img  ng-src="/userImage/{{requests.photo}}" width="20" height="20">&nbsp;&nbsp;{{requests.name}}&nbsp;&nbsp; <span>{{requests.requestDate | date:'yyyy-MM-dd HH:mm'}} <small class="pull-right" am-time-ago="requests.requestDate"></small></span>
+                                        <li class="alert-success"><label translate="gender"></label>:&nbsp;&nbsp;{{requests.gender}}&nbsp;&nbsp;<label translate="telephone"></label>:&nbsp;&nbsp;{{requests.telephone}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{requests.date | date:'yyyy-MM-dd HH:mm'}}</span>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" name="button" ng-click="acceptRequest(requests.passengerId,requests.passengerUserId,requests.requestId,requests.room)" translate="acceptTheRequest" class="btn btn-primary" ng-disabled="acceptedRequestButtonDisabled">accept request</button>
+                                         </li>
+                                        <li>
+                                        </li>
+                                      </ul>
+                                    </span>
+                                     <button type="button" name="button" ng-click="getAllAcceptedRequests()" translate="getAllAcceptedRequests" class="btn btn-primary">get all accepted requests</button><br>
+                                     <span ng-modal="noRequestedAcceptedByTransportOwner">{{noRequestedAcceptedByTransportOwner}}</span><br>
+                                     <span ng-if="acceptedRequestsData.length!==0">
+                                        <ul ng-repeat="travellers in acceptedRequestsData">
+                                          <img  ng-src="/userImage/{{travellers.photo}}" width="30" height="30">&nbsp;&nbsp;<label for="">{{travellers.name}}</label>
+                                            <li>
+                                            <label translate="gender"></label>:&nbsp;&nbsp;{{travellers.gender}}&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label translate="telephone"></label>:&nbsp;&nbsp;{{travellers.telephone}}
+                                            </li>
+                                        </ul>
+                                      </span>
+                                     
+                                  </span>
+                             </div>
+                    </div>
+                    <div class="col-lg-12" ng-show="showTransportRegistration">
+                             <div class="col-lg-6">
+                               <form>
+                                 <label translate="transportType">Transport Type:</label>
+                                  <span ng-model="transportChoosed" style="color:red;">:{{transportChoosed}} <a href="" ng-click="changeTransportType()" translate="changeTypeOfTransport">change type of transport</a></span><br>
+                                  <div ng-if="transportChoosed==null">
+                                      <span ng-if="languageKey==null">
+                                      <select class="form-control"  ng-model="$parent.transport" ng-change="changeTransport(transport.Id)"
+                                        ng-options="transport as transport.english for transport in transports" ng-focus="transportSelectionFocus()">
+                                     </select>
+                                    </span>
+                                     <span ng-if="languageKey=='EN'">
+                                    <select class="form-control"  ng-model="$parent.transport" ng-change="changeTransport(transport.Id)"
+                                      ng-options="transport as transport.english for transport in transports">
+                                   </select>
+                                  </span>
+                                   <span ng-if="languageKey=='TG'">
+                                    <select class="form-control"  ng-model="$parent.transport" ng-change="changeTransport(transport.Id)"
+                                      ng-options="transport as transport.tigrina for transport in transports">
+                                   </select>
+                                </span>
+                                 <span ng-if="languageKey=='NL'">
+                                    <select  class="form-control"  ng-model="$parent.transport" ng-change="changeTransport(transport.Id)"
+                                      ng-options="transport as transport.dutch for transport in transports">
+                                   </select>
+                                </span>
+                                  </div>
+                                 
+                              <label translate="from"></label>
+                              <autocomplete ng-model="fromCityAtOwnerRegistration" attr-placeholder=" from city..." city-enter="onEnter()" click-activation="true" data="cityDatas"  on-type="fillFromCityAtOwnerRegistration" on-select="cityFromSelection"></autocomplete>
+                              <label translate="to">To:</label>
+                              <autocomplete ng-model="toCityAtOwnerRegistration" attr-placeholder=" to city..." city-enter="onEnter()" click-activation="true" data="cityDatas"  on-type="fillToCityAtOwnerRegistration" on-select="cityToSelection"></autocomplete>
+                            <label translate="date">Date:</label><input type="Date" id="ownerDateId" ng-model="transportDate" class="form-control" name="date" required>
+                            <label translate="fromTime"></label><input type="text"  ng-model="fromTime" class="form-control"  required>
+                            <label translate="toTime"></label><input type="text"  ng-model="toTime" class="form-control"  required>
+                             <label translate="numberOfSeats">Number Of Seats:</label><input type="text" id="numberOfSeatsId" ng-model="numberOfSeats" class="form-control" name="numberOfSeats" required>
+                              <label translate="telephone"></label><input type="text" id="telephoneId" ng-model="telephone" class="form-control" name="telephone" required>
+                            <label translate="additionalInfo">Additional Information:</label><input type="text" id="additionalInfoId" ng-model="additionalInfo" class="form-control">
+                              <button  ng-click="ownerSubmit()" class="btn btn-primary" ng-disable="disableAfterSavingData=true">submit</button>
+                               <span ng-model="transportSavedSuccefully" class="alert-success">{{transportSavedSuccefully}}</span>
+                             <p style="color:red;">{{transportFieldControllerInfo}}</p>
+                          </form>
+                        </div>
+                        <button class="btn-success" ng-click="showTransportRegistrationArea()" translate="backToTransportImage">Back</button>
+                        <div class="col-lg-6">
+                                       <p ng-model="reactionInfo"></p>
+                                       <p translate="vehiclePicture">Vehicle picture</p>
+                                        <input type="file" id="fileInput" />
+                                        <hr>
+                                        <div class="pull-right col-lg-6">
+                                            <img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+                                        </div>
+                                        <div>
+                                            <label translate="cropedVehiclePicture">your vehicle looks like</label><br>
+                                            <div class="alert-warning">
+                                              <img ng-src="{{myCroppedImage}}" name="myFile1" width="100" height="100"/>
+                                            </div>
+                                            <hr>
+                                            <button ng-click="uploadPost()" class="btn btn-primary" translate="uploadVehicleImage" disabled="uploadVehicleImageDisabled">upload image</button>
+                                        </div>
+                                       <div class="col-lg-2 col-md-2 col-xs-4">
+                                        <hr>
+                                            <span translate="previousImageOfVehicle">present image</span>
+                                            <img ng-src="/transportOwnerImages/{{transportPhto}}" width="300" height="300">
+                                       </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            {{requestReply}}
+                           <label class="alert-info">{{noPassengers}}</label><br>
+                           <label class="alert-info">{{noTransports}}</label>
+                           <div class="">
+                              <div  ng-show="passengersList">
+                               <label translate="passengers">Passengers</label>
+                               <table border="1" style="width:100%;background-color: white;">
+                                    <thead>
+                                        <tr>
+                                            <th translate="date"></th>
+                                            <th translate="fromTime"></th>
+                                            <th translate="from"></th>
+                                            <th translate="to"></th>
+                                            <th translate="numberOfPeople"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="numberOfTravellersToThisPlace in numberOfTravellersToThisPlace">
+                                        <tr>
+                                             <td>{{numberOfTravellersToThisPlace.date | date : format : timezone}}</td>
+                                             <td>{{numberOfTravellersToThisPlace.fromTime | date:'HH:MM'}}</td>
+                                             <td>{{numberOfTravellersToThisPlace.fromPlace}}</td>
+                                             <td>{{numberOfTravellersToThisPlace.toPlace}}</td>
+                                             <td>{{numberOfTravellersToThisPlace.numberOfPeople}}</td>
+                                        </tr>
+                                    <tbody>
+                                </table>
+                              </div>
+                           </div>
+                           <br>
+                           <div ng-show="readyTransportsList">
+                             <label  translate="transports"></label>
+                             <table border="1" style="width:100%;background-color: white;">
+                                   <thead>
+                                       <tr>
+                                           <th translate="transportType"></th>
+                                           <th translate="numberOfSeats"></th>
+                                           <th translate="date"></th>
+                                           <th translate="fromTime"></th>
+                                           <th translate="from"></th>
+                                           <th translate="action">action</th>
+                                       </tr>
+                                   </thead>
+                                     <tbody ng-repeat="transport in readyTransports">
+                                       <div class="modal" id="showTransportBiger" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                                         <div class="modal-dialog model-lg">
+                                             <div class="modal-content">
+                                                <div class="modal-header">
+                                                   <button class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title" translate="buyThingsPost"></h4>
+                                                    <div class="modal-body">
+                                                        <img ng-src="/transportOwnerImages/{{transport.photo}}" width="100" height="100">
+                                                    </div>
+                                                </div>
+                                             </div>
+                                         </div>
+                                       </div>
+                                        <tr>
+                                            <td>
+                                              <span> <img ng-src="/userImage/{{transport.userPhoto}}" width="20" height="20"> {{transport.name}}</span>
+                                              <label>{{transport.type}}</label> <a href="#showTransportBiger" data-toggle="modal"> <img ng-src="/transportOwnerImages/{{transport.photo}}" data-scale="2.4" height="50" width="50"></a>
+                                            <p ng-if="transport.room!==''">
+                                              <span class="user-circle-online btn btn-success btn-circle"></span>online</p>
+                                             <p ng-if="transport.room==''">offline</p> </td>
+                                            <td>{{transport.numberOfSeats}} <p translate="freeSpace"></p>{{transport.freeSeats}}</td>
+                                            <td>{{transport.date | date:'yyyy-MM-dd HH:mm'}}</td>
+                                            <td>{{transport.fromTime | date:'HH:mm'}} <p translate="toTime"></p>{{transport.toTime | date:'HH:mm'}}</td>
+                                            <td>{{transport.fromPlace}} <p translate="to"></p>{{transport.toPlace}}</td>
+                                            <td>
+                                            <div ng-if="transport.id">
+                                              <button type="button" class="btn btn-success" ng-click="request(transport.id,transport.transportTypeId,transport.type,transport.fromPlace,transport.toPlace,transport.date,transport.userId,transport.room)" translate="request"  ng-disabled="requestButtonDisabled"></button>
+                                            </div></td>
+                                       </tr>
+
+                                   <tbody>
+                             </table>
+                           </div>
+                        </div>
+                    </div>
+              </div>
+             

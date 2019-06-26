@@ -1,0 +1,136 @@
+
+            <!--  page-wrapper -->
+          <div id="page-wrapper">
+            <div class="row">
+                 <!-- page header -->
+                <div class="col-lg-12">
+                    <h1 class="page-header" translate="userSettings"></h1>
+                    <span>ID:{{userId}}</span>
+                </div>
+                <!--end page header -->
+            </div>
+            <div class="row" ng-controller="userRegistrationController">
+                <div class="col-lg-12">
+                    <!-- Form Elements -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+
+                        </div>
+                        <div>
+                             <p id="reactionAlert" class="alert alert-info myalert"></p>
+                        </div>
+                        <div class="modal" id="userSettingsModal" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                                  <div class="modal-dialog model-lg">
+                                      <div class="modal-content">
+                                           <div class="modal-header">
+                                               <button class="close" data-dismiss="modal">&times;</button>
+                                               <h4 class="modal-title" translate="updateUserSettings"></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                              <div>
+                                                <p id="reactionAlert" class="alert alert-info myalert"></p>
+                                              </div>
+                                               <form role="form">
+                                                    <div class="form-group">
+                                                       <label translate="fullName"></label>
+                                                       <input type="text" class="form-control" ng-model="name" placeholder="Name" name="name">
+                                                    </div>
+                                                    <div>
+                                                       <p style="color:blue" translate="dateOfBirth"></p>
+                                                      <input type="date" id="dateId" ng-model="userBirthDate" class="form-control" required="True" >
+                                                    </div>
+                                                    <div>
+                                                        <label translate="country"></label>
+                                                             <a href="" ng-click="loadCountries()" class="loadCountries pull-right" translate="loadCountry">Load countries</a>
+                                                             <select class="form-control" ng-model="countryAtRegistration" ng-change="chooseCountryAtRegistration(countryAtRegistration.Id,countryAtRegistration.country)"
+                                                                ng-options="country as country.country for country in countries">
+                                                             </select>
+                                                          
+                                                            <label translate="city"></label>
+                                                             <a href="" ng-click="loadCities()" class="loadCities pull-right" translate="loadCities">Load cities</a>
+                                                            <select class="form-control" ng-model="citiesAtRegistration" ng-change="chooseCityAtRegistration(citiesAtRegistration.id,citiesAtRegistration.cityName)"
+                                                                ng-options="city as city.cityName for city in cities">
+                                                             </select>
+                                                    </div>
+                                                    <button type="button" ng-click="updateRegistration()" class="btn btn-primary" translate="saveUpdate"></button>
+                                               </form>
+                                            </div>
+                                      </div>
+                                  </div>
+                                </div>
+                         <!-- <a href="" ng-click="toggel_friends()">Connected with</a> -->
+                         <a href="" ng-click="toggle_userSetting()" translate="userSetting">User setting</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                         <a href="" ng-click="toggle_profilePicSetting()" translate="userProfile">profile picture</a>
+                        <div class="panel-body">
+                        <div class="row">
+                                <div class="col-lg-6" ng-show="userSetting">
+                                  <div class="panel panel-primary">
+                                      <div class="panel-heading">
+                                         <label translate="updateYourInformation"></label>
+                                      </div>
+                                      <div class="panel-body">
+                                            <div>
+                                               <form role="form">
+                                                     <div class="form-group">
+                                                        <input type="hidden" ng-model="idUser">
+                                                        <label translate="fullName"></label>
+                                                        <a href="#userSettingsModal" data-toggle="modal"><input type="text" class="form-control" ng-model="name" placeholder="Name" name="name"></a>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label translate="username"></label>
+                                                        <a href="#userSettingsModal" data-toggle="modal"><input type="text" class="form-control" ng-model="username" placeholder="username" name="username" disabled="true"></a>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label translate="email"></label>
+                                                        <a href="#userSettingsModal" data-toggle="modal"><input type="text" class="form-control" ng-model="email" placeholder="Email" name="email"></a>
+                                                     </div>
+                                                     <div class="form-group">
+                                                        <label translate="password"></label>
+                                                        <a href="#userSettingsModal" data-toggle="modal"><input type="password" class="form-control" ng-model="password" placeholder="password" name="password"></a>
+                                                     </div>
+                                                     <div>
+                                                        <p style="color:blue" translate="dateOfBirth"></p>
+                                                        <a href="#userSettingsModal" data-toggle="modal">
+                                                           <input type="date" id="dateId" ng-model="userBirthDate" class="form-control" required="True" >
+                                                        </a>
+                                                     </div>
+
+                                                     <div>
+                                                         <label translate="country"></label>
+                                                           <a href="#userSettingsModal" data-toggle="modal">
+                                                         <input type="text" ng-model="country" class="form-control">
+                                                           </a>
+                                                         <label translate="livesIn"></label>
+                                                          <a href="#userSettingsModal" data-toggle="modal">
+                                                         <input type="text" ng-model="livesIn" class="form-control">
+                                                       </a>
+                                                     </div>
+                                                </form><br><br>
+                                            </div>
+                                      </div>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6" ng-show="profilePic">
+                                    <img ng-src="/userImage/{{photo}}" alt="" width="100" height="100"><br>
+                                    <span translate="previousProfilePic">current profile pic</span>
+                                    <hr>
+                                  <div>
+
+                                    <p translate="selectProfileImage"></p>
+                                    <input type="file" id="fileInput" />
+                                    <div class="pull-right col-lg-6">
+                                        <img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+                                        <hr>
+                                    </div>
+                                    <div>
+                                        <label translate="yourProfilePictureLooksLike"></label><br>
+                                        <img ng-src="{{myCroppedImage}}" name="myFile1" width="100" height="100"/><hr>
+                                        <button ng-click="uploadCropedImage()" class="btn btn-primary" translate="saveUpdate"></button>
+                                    </div>
+                                  </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page-wrapper -->

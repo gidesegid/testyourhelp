@@ -1,0 +1,209 @@
+
+            
+        <div id="page-wrapper">
+            <div class="row">
+                 <!--  page header -->
+                <div class="col-lg-12">
+                    <h2 class="page-header" translate="employersAndEmployees"></h2>
+                    <p id="reactionAlert" class="alert alert-info myalert"></p>
+                </div>
+                <!--end  page header -->
+            </div>
+                <div class="alert alert-warning fade in">
+                        <div ng-if="workClientOrderId==undefined" class="pull-right">
+                           <button class="btn btn-danger">
+                               <a href="#notReadyYet" data-toggle="modal" translate="workClientPayment" style="color:white;"></a>
+                           </button>
+                           <a href="#employer" data-toggle="modal" translate="whoShouldRegisterAsEmployer"></a>
+                        </div>
+                        <div ng-if="workClientOrderId!==undefined" class="pull-right">
+                               <button class="btn btn-primary" ng-disabled="disablingClientRegistration" ng-click="clientRegistration()">
+                                 <a href="clientRegistration" translate="employerRegistration"></a>
+
+                               </button>
+                               <a href="#employer" data-toggle="modal" translate="whoShouldRegisterAsEmployer"></a>
+                        </div>
+                        <div>
+                             <button class="btn btn-waring"  ng-disabled="disablingProfessionalRegistration">
+                               <a href="professionRegistration/{{userId}}" translate="professionalRegistration"></a>
+                             </button>
+                             <a href="#employee" data-toggle="modal" translate="whoShouldRegisterAsEmployee"></a>
+                        </div>
+                        <div class="modal" id="notReadyYet" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog model-lg">
+                                <div class="modal-content">
+                                   <div class="modal-header">
+                                    <button class="close" data-dismiss="modal">&times;</button>
+                                  </div>
+                                    <div class="modal-body">
+                                        <span ng-if="languageKey=='TG'">
+                                            <p>ይቕረታ ግበሩልና፣እዛ ወብሳይት እዚኣ ኣብዚ እዋን ዚ ስርሓ ስለዘይጀመረት ቁሩብ መዓልታት ክትዕገሱና ኢኹም።</p><br>
+                                            <input type="checkbox" ng-click="sendMeEmail()">ስራሕ ኣብ ዝጀመረሉ መዘኻኸሪ ናብ ኢመይለይ ክስደደለይ ይደሊ ኢየ። <br>
+                                            <p class="alert-success">{{reminderResult}}</p>
+                                        </span>
+                                        <span ng-if="languageKey=='NL'">
+                                            <p>Sorry! Deze website is nog niet gestart</p><br>
+                                            <input type="checkbox" ng-click="sendMeEmail()">Herinner me eraan wanneer ik begonnen <br>
+                                            <p class="alert-success">{{reminderResult}}</p>
+                                        </span>
+                                        <span ng-if="languageKey=='EN'">
+                                            <p>Sorry! This website is not yet started</p><br>
+                                            <input type="checkbox" ng-click="sendMeEmail()" ng-model="remind">Remind me when started. <br>
+                                            <p class="alert-success">{{reminderResult}}</p>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="modal" id="paymentModal" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                          <div class="modal-dialog model-lg">
+                              <div class="modal-content">
+                                 <div class="modal-header">
+                                  <button class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                  <div class="modal-body">
+                                    <form role="form" method="post" action="/getMolliePayments">
+                                         <input type="hidden" name="languageKey" value="{{languageKey}}">
+                                        <input type="hidden" name="theRequestComesFrom" value="clients">
+                                        <label translate="amountToPay"></label>:50€
+                                        <input type="hidden" class="form-control" name="amount" value="50">
+                                        <input type="hidden" class="form-control" name="userId" value="{{userId}}"><br>
+                                        <label translate="name">name</label>
+                                        <input type="text" class="form-control" name="name" required>
+                                        <label translate="surName" >sur name</label>
+                                        <input type="text" name="surName" class="form-control" required>
+                                        <label translate="email" >email</label>
+                                        <input type="email" name="email" class="form-control" required>
+                                        <label translate="telephone" >telephone</label>
+                                        <input type="tele" name="telephone" class="form-control" required>
+                                        <label translate="country" >country</label>
+                                        <input type="text" name="country" class="form-control" value="{{country}}">
+                                        <label translate="city">city</label>
+                                        <input type="text" name="city" class="form-control" value="{{livesIn}}">
+                                        <label translate="postCode">post code</label>
+                                        <input type="text" class="form-control" name="postCode" required>
+                                        <label translate="street"></label>
+                                        <input type="text" name="street" class="form-control" required>
+                                        <label translate="houseNumber"></label>
+                                        <input type="text" name="houseNumber" class="form-control" required>
+                                        <button type="submit" translate="payNow" class="btn btn-success" value="Pay" ></button>
+                                    </form>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                            <div class="modal" id="employer" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                                <div class="modal-dialog model-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button class="close" data-dismiss="modal">&times;</button>
+                                             <h4 class="modal-title" translate="whoShouldRegisterAsEmployer"></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                           <ul>
+                                              <li translate="registerAsEmployerIf"></li>
+                                           </ul>
+                                           <h3 translate="generalInformationAboutEmployerRegistration"></h3>
+                                           <p translate="whyEmployer"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal" id="employee" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                                <div class="modal-dialog model-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button class="close" data-dismiss="modal">&times;</button>
+                                             <h4 class="modal-title" translate="whoShouldRegisterAsEmployee"></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                          <p translate="registeringAsEmployeeIf"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                </div>
+            <div class="row">
+                 
+                <div class="col-lg-6">
+                    <div class="panel panel-default professionalsListScrollbar" >
+                        <div class="panel-heading">
+                            <p translate="employees"></p>
+                            <div class="input-group">
+                              <span  class="input-group-btn">
+                                  <button   class="btn btn-primary btn-sm" translate="search" ng-click="searchSingleProfessional()">Search</button>
+                              </span>
+                              <input id="btn-input" type="text" ng-model="searchProfessionalData" placeholder="{{searchProfessionalsPlaceHolder}}" class="input1 form-control input-sm chat_input" placeholder="{{emplyeePlaceHolder}}"/>
+                            </div>
+                        </div>
+                        <div class="panel-body " id="professionalsList" ng-hide="professionalList">
+                            <label for="professionalSearchResults" class="alert-danger">{{professionalSearchResults}}</label>
+                          <ul class="list-group" ng-repeat="listOfTranslators in listOfTranslators | filter:searchProfessional">
+                              <li class="list-group-item"><p ng-click="getId(listOfTranslators.name,listOfTranslators.id)">
+                              <strong><img ng-src="/userImage/{{listOfTranslators.photo}}" width="30" height="30">:&nbsp;{{listOfTranslators.name}}</strong>
+                              <p><label translate="gender"></label>:&nbsp;{{listOfTranslators.genderInEnglish}}&nbsp;&nbsp;<label translate="dateOfBirth"></label>:{{listOfTranslators.birthDate | date:'yyyy-MM-dd'}}</p>
+                              <p><label translate="profession"></label>:&nbsp;{{listOfTranslators.profession}}&nbsp;&nbsp;<label translate="livesIn"></label>:{{listOfTranslators.livesIn}},{{listOfTranslators.country}}</p>
+                               </p>
+                               <a href="#" ng-click="professionalMotivation(listOfTranslators.Id)" translate="professionalMotivation">see motivation</a>
+                              </li>
+                              <li class="list-group-item">
+                                <button ng-click="sendRequestToProfessionalOrClient(listOfTranslators.userId,messageBox,listOfTranslators.userroom)" translate="sendWorkRequest" class="btn btn-primary" ng-disabled="disabledProfessional" ng-hide="checked"></button>
+                              <button ng-click="sendFriendRequestToProfessionalOrClient(listOfTranslators.userId,messageBox,listOfTranslators.userroom)" translate="friendRequest" class="btn btn-primary" ng-disabled="disabledProfessional" ng-hide="checked"></button>
+                              </a> &nbsp;&nbsp; <input type="checkbox" ng-disabled="disabledProfessional" ng-model="checked"><span translate="sendMessageHere"></span>
+                                  <div ng-show="checked"><br>
+                                      <textarea ng-model="messageBox" row="5" col="3" class="form-control" placeholder="write a message here"></textarea><br>
+                                      <button ng-click="sendMessageToProfessionalOrClient(listOfTranslators.userId,messageBox,listOfTranslators.userroom)" class="btn btn-primary"  translate="send"></button>
+                                  </div></li>
+                            </ul>
+                        </div>
+                        <div class="alert alert-warning" ng-show="professionalList">
+                          <a href="#" ng-click="backToProfessionalsList()" translate="backToProfessionalsList">Back to Professionals list</a>
+                          <p>{{motivation}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel panel-default clientsListScrollbar" id="clientsList">
+                        <div class="panel-heading">
+                         <p translate="employer"></p>
+                         <div class="input-group">
+                            <!-- searchPlaceHolder -->
+                              <input id="btn-input" type="text" ng-model="searchClient" placeholder="{{searchClientPlaceHolder}}" class="input1 form-control input-sm chat_input" placeholder="{{emploerPlaceHolder}}"/>
+                              <span  class="input-group-btn">
+                                  <button   class="btn btn-primary btn-sm" translate="search" ng-click="searchSingleClient()">Search</button>
+                              </span>
+                            </div>
+                        </div>
+                            <div ng-hide="showWorkDetails">
+                                <label for="searchClient" class="alert-danger">{{searchClientResults}}</label>
+                                <ul class="list-group" ng-repeat="client in allClientsDetails | filter:searchToWork">
+                                  <li class="list-group-item">
+                                      <p>
+                                        <p><img ng-if="client.photo!==null" ng-src="/userImage/{{client.photo}}" width="30" height="30">:&nbsp;{{client.name}}</p>
+                                        <p><label translate="gender"></label>:&nbsp;{{client.englishGender}}&nbsp;&nbsp; <label translate="dateOfBirth"></label>:&nbsp;{{client.birthDate | date:'yyyy-MM-dd'}}</p>
+                                        <p><label translate="livesIn"></label>:&nbsp;{{client.livesIn}},{{client.country}}<br>
+                                          <a href="#" ng-click="getWorkDetails(client.Id)" translate="workToBeDone">see work details</a>
+                                        </p>
+                                    </p></li>
+                                    <li class="list-group-item">
+                                      <button ng-click="sendRequestToProfessionalOrClient(client.userId,messageBox,client.userroom,client.photo)" translate="sendWorkRequest" ng-disabled="disabledClient" class="btn btn-primary" ng-hide="checked"></button>
+                                    <button ng-click="sendFriendRequestToProfessionalOrClient(client.userId,messageBox,client.userroom,client.photo)" ng-disabled="disabledClient" class="btn btn-primary" ng-hide="checked" translate="friendRequest"></button>
+                                       &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" ng-disabled="disabledClient"  ng-model="checked"><span translate="sendMessageHere"></span><br>
+                                        <form ng-show="checked"><br>
+                                          <textarea ng-model="messageBox" row="10" col="5" class="form-control" placeholder="write a message here"></textarea><br>
+                                          <button ng-click="sendMessageToProfessionalOrClient(client.userId,messageBox,client.userroom)" class="btn btn-primary" translate="send"></button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="alert alert-success" ng-show="showWorkDetails">
+                              <a href="#" ng-click="backToClientsList()" translate="backToClientsList">back to home</a>
+                                <p>{{workDetails}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end wrapper -->

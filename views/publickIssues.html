@@ -1,0 +1,102 @@
+<div class="container">
+      <div class="row">
+        <div class="col-lg-8">
+          <h3 translate="issuesAndSuggestions" class="issueTitle"></h3>
+        </div>
+        <div class="col-lg-6">
+           <div>
+                <table>
+                  <tr>
+                    <th>
+                       <label translate="problemType"></label>
+                        <span ng-if="languageKey=='EN'">
+                           <select class="form-control" ng-model="$parent.filterByProblemType" ng-change="filterByProblemChanged(filterByProblemType.Id)"
+                                  ng-options="filterByProblemType as filterByProblemType.english for filterByProblemType in problemsCriteria">
+                                </select>
+                        </span>
+                        <span ng-if="languageKey=='TG'">
+                           <select class="form-control" ng-model="$parent.filterByProblemType" ng-change="filterByProblemChanged(filterByProblemType.Id)"
+                                  ng-options="filterByProblemType as filterByProblemType.tigrina for filterByProblemType in problemsCriteria">
+                                </select>
+                        </span>
+                        <span ng-if="languageKey=='NL'">
+                           <select class="form-control" ng-model="$parent.filterByProblemType" ng-change="filterByProblemChanged(filterByProblemType.Id)"
+                                  ng-options="filterByProblemType as filterByProblemType.dutch for filterByProblemType in problemsCriteria">
+                                </select>
+                        </span>
+                        <br>
+                        <input type="text" class="form-control" ng-model="searchIssue" placeholder="{{searchIssuesPlaceHolder}}">
+
+                    </th>
+                  </tr>
+                  <tr ng-repeat="problems  in computerProblem | filter:searchIssue" class="issueList">
+                    <td>
+                        <div class="issues.list">
+                           <p>{{problems.problem}}</p>
+                           <p><img src="/userImage/{{problems.photo}}"  width="30" height="30">{{problems.username}}</p>
+                           <span am-time-ago="problems.timestamp"></span>
+                        </div>
+                        <div>
+                          <a href="" ng-click="lookSuggestions(problems.id,problems.problem)" translate="seeSuggestion"></a>
+                        </div>
+                    </td>
+                  </tr>
+                </table>
+           </div>
+        </div>
+        <div class="col-lg-6" ng-show="showIssueReplies">
+
+           <div class="panel panel-default" >
+              <div class="panel-body scrollbarNotification" id="notification-1" >
+                <hr>
+                <span>{{selectedProblem}}</span>
+                <hr>
+                      <table>
+                            <thead style="background-color: lightgray;">
+                              <tr>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-repeat-start="suggestion in problemSuggestions track by $index">
+                                <td>
+                                  <button ng-if="suggestion.expanded" ng-click="suggestion.expanded = !suggestion.expanded;">-</button>
+                                  <button ng-if="!suggestion.expanded" ng-click="suggestion.expanded = !suggestion.expanded;showRepliesToComment(suggestion.suggestionId);">+</button>
+                                </td>
+                                <td>{{suggestion.suggestion}}
+                                    <span class="pull-right text-muted">
+                                       <img src="/userImage/{{suggestion.suggesterPhoto}}"  width="30" height="30">{{suggestion.suggesterUsername}}
+                                        <span am-time-ago="suggestion.suggestionTime">
+
+                                        </span>
+                                    </span>
+                                     <div>
+                                      <input type="checkbox" ng-model="replyCheckBox" ><span translate="reply"></span>&nbsp;&nbsp; <label class="alert-success">{{suggestion.numberOfReplies}}&nbsp;&nbsp;</label> <a href="" ng-click="showRepliesToComment(suggestion.suggestionId)"><span translate="numberOfReplies"></span> </a>
+                                    </div>
+                                     <div ng-show="replyCheckBox" class="panel-footer">
+                                          <a href="login" translate="login"></a>
+                                     </div>
+                                </td>
+                              </tr>
+                              <tr ng-if="suggestion.expanded" ng-repeat-end="suggestion.suggestionId">
+                                <td colspan="3">
+                                        <div ng-if="suggestion.suggestionId==currentSuggestionId"  class="panel-body alert-success">
+                                       <ul ng-repeat="reply in replyData">
+                                            <li style="list-style-type: none;">
+                                                <div>
+                                                    <label><img src="/userImage/{{reply.photo}}" width="30" height="30">{{reply.replyerName}}</label><span class="pull-right text-muted"><span am-time-ago="reply.timeReplied"></span></span>
+                                                    <p>{{reply.reply}}</p>
+                                                </div>
+                                            </li>
+                                       </ul>
+                                    </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+              </div>
+            </div>
+        </div>
+      </div>
+</div>
+             
+        

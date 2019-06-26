@@ -1,0 +1,104 @@
+
+            <!--  page-wrapper -->
+        <div id="page-wrapper">
+          <br><br><br>
+            <div class="row" ng-controller="adminController">
+              <div class="">
+                  <a href="#" ng-click="uploadWorkLists()">upload work lists</a>
+                  <table border="1" style="width:70%">
+                       <thead>
+                           <tr>
+                               <th>english work title</th>
+                               <th>tigrina work title</th>
+                               <th>action</th>
+                           </tr>
+                       </thead>
+                       <tbody ng-repeat="data in workListProfessions">
+                           <tr>
+                                <td>{{data.english}}</td>
+                                <td>{{data.tigrigna}}<input type="text" ng-model="translatedTigrignaProfession" value="{{data.tigrigna}}"></td>
+                                <td><button ng-click="updateWorkList(data.Id,translatedTigrignaProfession)">update</button></td>
+                           </tr>
+                       <tbody>
+                   </table>
+              </div><br>
+              <div class="">
+                  <a href="#" ng-click="deleteExternalInfo()">delete professions from external</a><br>
+              </div><br>
+                <div class="">
+                  <a href="#" ng-click="contacts()">contacts</a>
+                  <table border="1" style="width:70%">
+                       <thead>
+                           <tr>
+                               <th>name</th>
+                               <th>email</th>
+                               <th>tele</th>
+                               <th>message</th>
+                               <th>date</th>
+                           </tr>
+                       </thead>
+                       <tbody ng-repeat="data in contactsInof">
+                           <tr>
+                                <td>{{data.name}}</td>
+                                <td>{{data.email}}</td>
+                                <td>{{data.tele}}</td>
+                                <td>{{data.message}}</td>
+                                <td>{{data.date}}</td>
+                                <td>
+                                  <button ng-click="deleteContact(data.id)">delete</button>
+                                </td>
+                           </tr>
+                       <tbody>
+                   </table>
+                </div><br>
+                <div class="">
+                  <a href="#" ng-click="airTravel()">air travels</a>
+                  <table border="1" style="width:70%">
+                       <thead>
+                           <tr>
+                               <th>id</th>
+                               <th>message</th>
+                               <th>done</th>
+                               <th>date</th>
+                           </tr>
+                       </thead>
+                       <tbody ng-repeat="data in airTravelInfo">
+                           <tr>
+                                <td>{{data.id}}</td>
+                                <td>{{data.message}}</td>
+                                <td>{{data.done}}</td>
+                                <td><span am-time-ago="data.requestDate"></span></td>
+                                <td>
+                                  <button ng-click="deleteAirTravel(data.id)">delete</button>
+                                </td>
+                           </tr>
+                       <tbody>
+                   </table>
+                </div><br>
+                 <div class="">
+                   <a href="#" ng-click="moneyTransfer()">money transfer</a>
+                   <table border="1" style="width:70%">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>message</th>
+                                <th>done</th>
+                                <th>date</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="data in moneyTransferInfo">
+                            <tr>
+                                 <td>{{data.id}}</td>
+                                 <td>{{data.message}}</td>
+                                 <td>{{data.done}}</td>
+                                 <td><span am-time-ago="data.requestDate"></span></td>
+                                 <td>
+                                   <button ng-click="deleteMoneyTransfer(data.id)">delete</button>
+                                 </td>
+                            </tr>
+                        <tbody>
+                    </table>
+                 </div>
+            </div>
+        </div>
+        <!-- end page-wrapper -->

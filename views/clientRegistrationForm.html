@@ -1,0 +1,144 @@
+
+            <!--  page-wrapper -->
+        <div id="page-wrapper">
+
+            <div class="row" ng-controller="clientCtrl">
+
+                <div class="col-lg-12"><br><br>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <label translate="clientRegistration"></label>
+                        </div>
+                        <div>
+                         <p id="reactionAlert" class="alert alert-info myalert"></p>
+                        </div>
+                        <div ng-if="clientOrderId==undefined">
+                           <button class="btn btn-danger">
+                               <a href="#paymentModal" data-toggle="modal" translate="workClientPayment" style="color:white;"></a>
+                           </button>
+                           <a href="#employer" data-toggle="modal" translate="whoShouldRegisterAsEmployer"></a>
+                        </div>
+                        <div class="modal" id="paymentModal" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                          <div class="modal-dialog model-lg">
+                              <div class="modal-content">
+                                 <div class="modal-header">
+                                  <button class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                  <div class="modal-body">
+                                    <form role="form" method="post" action="/getMolliePayments">
+                                         <input type="hidden" name="languageKey" value="{{languageKey}}">
+                                        <input type="hidden" name="theRequestComesFrom" value="clients">
+                                        <label translate="amountToPay"></label>:50€
+                                        <input type="text" class="form-control" name="amount" value="50">
+                                        <input type="hidden" class="form-control" name="userId" value="{{userId}}"><br>
+                                         <label translate="name">name</label>
+                                        <input type="text" class="form-control" name="name" required>
+                                        <label translate="surName" >sur name</label>
+                                        <input type="text" name="surName" class="form-control" required>
+                                        <label translate="email" >email</label>
+                                        <input type="email" name="email" class="form-control" required>
+                                        <label translate="telephone" >telephone</label>
+                                        <input type="tele" name="telephone" class="form-control" required>
+                                        <label translate="country" >country</label>
+                                        <input type="text" name="country" class="form-control" value="{{country}}">
+                                        <label translate="city">city</label>
+                                        <input type="text" name="city" class="form-control" value="{{livesIn}}">
+                                        <label translate="postCode">post code</label>
+                                        <input type="text" class="form-control" name="postCode" required>
+                                        <label translate="street"></label>
+                                        <input type="text" name="street" class="form-control" required>
+                                        <label translate="houseNumber"></label>
+                                        <input type="text" name="houseNumber" class="form-control" required>
+                                        <button type="submit" translate="payNow" class="btn btn-success" value="Pay" ></button>
+                                    </form>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                         <div class="modal" id="employer" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                                <div class="modal-dialog model-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button class="close" data-dismiss="modal">&times;</button>
+                                             <h4 class="modal-title" translate="whoShouldRegisterAsEmployer"></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                          <p translate="registerEmployerIf">You can register as employer if:-</p>
+                                           <ul>
+                                              <li> <p translate="youHaveWorksToBeDone">you have works to be done</p></li>
+                                              <li><p  translate="youAreLookingForProfessionals">you are looking for professionals</p></li>
+                                           </ul>
+                                           <h3 translate="generalInformationAboutEmployerRegistration"></h3>
+                                           <p translate="whyEmployer"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                          </div>
+                       <div class="panel-body" ng-if="clientOrderId!==undefined" >
+                            <div class="col-lg-6">
+                                <form name="cForm" novalidate>
+                                  <label translate="name"></label>
+                                  <input type="text" ng-model="$parent.name" class="form-control">
+                                  <label translate="websiteAddress"></label>
+                                  <input type="text" ng-model="$parent.url" class="form-control">
+                                  <label translate="telephone"></label>
+                                  <input type="text" id="teleId" ng-minlength="8" ng-maxlength="14" onkeypress='return event.charCode >= 48 && event.charCode <= 57' name="cTele" placeholder="Telephone" ng-model="$parent.cTele" class="form-control" required>
+                                    <p ng-show="proForm.pTele.$error.minlength">not valid number</p>
+                                    <p ng-show="proForm.pTele.$error.maxlength">not valid number</p>
+                                   <p ng-show="cForm.email.$invalid && !cForm.email.$pristine" class="help-block">Enter remarks</p>
+                                  <label translate="howLongDoesTheWorkTakes"></label>
+                                  <input type="text" id="remarkId" name="timeTaken" placeholder="hours can take" ng-model="$parent.timeTaken" class="form-control" required>
+                                   <p ng-show="cForm.timeTaken.$invalid && !cForm.timeTaken.$pristine" class="help-block">Enter remarks</p>
+                                </form>
+                                <span translate="country"></span>
+                                <autocomplete ng-model="$parent.country" attr-placeholder="country..." country-enter="onEnter()" click-activation="true" data="countryDatas"  on-type="fillCountry" on-select="countrySelection"></autocomplete>
+                                <span translate="city"></span>
+                                 <autocomplete ng-model="$parent.city" attr-placeholder=" city..." city-enter="onEnter()" click-activation="true" data="cityDatas"  on-type="fillCity"  on-select="citySelection"></autocomplete>
+                                 <label translate="youAreLookingNow"></label><input type="hidden" ng-model="cWorkSituationId">
+                                  <span ng-if="languageKey=='EN'">
+                                     <select class="form-control" ng-options="status as status.english for status in statuses track by status.Id" ng-change="cworksituation(cWorkSituation.Id)" ng-model="$parent.cWorkSituation" title="choose profession" >
+                                       <option value="">{{cWorkSituation}}</option>
+                                         </select>
+                                  </span>
+                            <span ng-if="languageKey==null">
+                               <select class="form-control" ng-options="status as status.english for status in statuses track by status.Id" ng-change="cworksituation(cWorkSituation.Id)" ng-model="$parent.cWorkSituation" title="choose profession" >
+                                  <option value="">{{cWorkSituation}}</option>
+                                   </select>
+                            </span>
+                            <span ng-if="languageKey=='TG'">
+                               <select class="form-control" ng-options="status as status.tigrina for status in statuses track by status.Id" ng-change="cworksituation(cWorkSituation.Id)" ng-model="$parent.cWorkSituation" title="choose profession" >
+                                  <option value="">{{cWorkSituation}}</option>
+                                   </select>
+                            </span>
+                            <span ng-if="languageKey=='NL'">
+                               <select class="form-control" ng-options="status as status.dutch for status in statuses track by status.Id" ng-change="cworksituation(cWorkSituation.Id)" ng-model="$parent.cWorkSituation" title="choose profession" >
+                                  <option value="">{{cWorkSituation}}</option>
+                                   </select>
+                            </span>
+                            <label translate="soYouAreLookingFor"></label>
+                            <autocomplete ng-model="$parent.profession" attr-placeholder="profession..." profession-enter="onEnter()" click-activation="true" data="professionDatas"  on-type="fillProfession" on-select="professionSelection"></autocomplete>
+
+                            </div>
+                       <div>
+                           <div class="col-lg-6">
+                                  <label translate="writeWorkSummary"></label><br>
+                                  <textarea rows="5" cols="20" class="form-control"  placeholder="summary of work" ng-model="$parent.workSummary" name="workDetails" required></textarea>
+                                  <p ng-show="cForm1.workDetails.$error.maxlength" translate="exceedTheLimit">exceed the limet</p>
+                                  <label translate="writeWorkDetails"></label><br>
+                                  <textarea rows="5" cols="40" class="form-control"  placeholder="work details" ng-model="$parent.workDetails" name="workDetails" required></textarea>
+                                  <p ng-show="cForm1.workDetails.$error.maxlength" translate="exceedTheLimit">exceed the limet</p><br>
+
+                                 <input type="hidden" ng-model="clientDateAppointment">
+                                 <button translate="saveUpdate" ng-disabled="cForm.$invalid" value="save/update" ng-click="saveClientInfo()" class="btn btn-primary"></button>  <button class="btn btn-success pull-right">
+                                        <a  href="/jobFinder/professionalTransactions/logedIn/{{userId}}" class="fa fas fa-user-md sideBarFontSize" translate="backToWorkTransactions"></a>
+                                    </button><br>
+                                 <input type="hidden" name="ClientId" ng-model="clientMainTableId">
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end page-wrapper -->
+    </div>
+    <!-- end wrapper -->
+

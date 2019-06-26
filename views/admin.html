@@ -1,0 +1,208 @@
+
+            <!--  page-wrapper -->
+          <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Form Elements -->
+                    <hr>
+                    <a href="permission/{{userId}}">permission</a><br>
+                    <a href="workList/{{userId}}">work lists</a>
+                    <label for="" class="pull-right">{{adminmessage}}</label>
+                    <div>
+                       <label><input type="text" ng-model="passengers" placeholder="passengers telephone" class="form-control">
+                       <input type="button" value="load Passengers" ng-click="loadPassengers()"></label>
+                    </div>
+                     <div class="panel panel-default">
+                          <table>
+                            <tr>
+                              <th>tele</th>
+                              <th>date</th>
+                              <th>from time</th>
+                               <th>fromPlace</th>
+                               <th>toPlace</th>
+                               <th>choosedTransport</th>
+                               <th>code</th>
+                               <th>approved</th>
+                          </tr>
+                              <tr ng-repeat="passenger in allPassengers | filter:passengers">
+                                <td>{{passenger.telephone}}</td>
+                                <td>{{passenger.date | date:'yyyy-MM-dd HH:mm'}}</td>
+                                <td>{{passenger.fromTime | date:'HH:mm'}}</td>
+                                <td>{{passenger.fromPlace}}</td>
+                                <td>{{passenger.toPlace}}</td>
+                                <td>{{passenger.transportChoosed}}</td>
+                                <td>{{passenger.code}}</td>
+                                <td>{{passenger.approved}}</td>
+                                <td><input type="button" class="btn btn-chat" value="delete" ng-click="deletePassenger(passenger.id)"></td>
+                             </tr>
+                        </table>
+                    </div>
+                    <div>
+                       <label><input type="text" ng-model="transportOwner" placeholder="transport owners fromPlace" class="form-control">
+                         <input type="button" value="load transport owners" ng-click="loadTransportOwners()"></label>
+                    </div>
+                     <div class="panel panel-default">
+                           <table>
+                              <tr>
+                                  <th>transport</th>
+                                  <th>free space</th>
+                                   <th>date</th>
+                                   <th>from time</th>
+                                    <th>to time</th>
+                                   <th>from place</th>
+                                   <th>to place</th>
+                              </tr>
+                              <tr ng-repeat="transport in allTransportOwners | filter:transportOwner">
+                                  <td>{{transport.type}}</td>
+                                  <td>{{transport.numberOfSeats}}</td>
+                                  <td>{{transport.date | date:'yyyy-MM-dd HH:mm'}}</td>
+                                  <td>{{transport.fromTime | date:'HH:mm'}}</td>
+                                  <td>{{transport.toTime | date:'HH:mm'}}</td>
+                                  <td>{{transport.fromPlace}}</td>
+                                  <td>{{transport.toPlace}}</td>
+                                  <td><input type="button" value="delete" class="btn btn-circle" ng-click="deleteTransportOwner(transport.id)"></td>
+                               </tr>
+                          </table>
+                    </div>
+                     <div>
+                         <label><input type="text" ng-model="users" placeholder="user id" class="form-control">
+                         <input type="button" value="load users" ng-click="loadUsers()"></label>
+                      </div>
+                    <div class="panel panel-default">
+                          <table>
+                            <tr>
+                                <th>id</th>
+                                <th>name</th>
+                                 <th>username</th>
+                                 <th>email</th>
+                                 <th>photo</th>
+                                 <th>userroom</th>
+                                 <th>permission</th>
+                                 <th>gender</th>
+                                 <th>birthdate</th>
+                                 <th>registrationDate</th>
+                                 <th>lives in</th>
+                            </tr>
+                            <tr ng-repeat="user in adminpostUsers | filter:users">
+                                <td>{{user.id}}</td>
+                                <td>{{user.name}}</td>
+                                <td>{{user.username}}</td>
+                                <td>{{user.email}}</td>
+                                <td><img src="/userImage/{{user.photo}}" width="20" height="20"></td>
+                                <td>{{user.userroom}}</td>
+                                <td>{{user.permission}}
+                                <select ng-model="selectedPermission">
+                                  <option ng-repeat="permissions in permissionCriterias">{{permissions}}</option>
+                                </select> <button ng-click="addPermissionFromAdminPage(user.id,selectedPermission)">add permission</button></td>
+                                <td>{{user.gender}}</td>
+                                <td>{{user.birthDate | date:'yyyy-MM-dd HH:mm'}}</td>
+                                <td>{{user.registrationDate | date:'yyyy-MM-dd HH:mm'}}</td>
+                                <td>{{user.livesIn}},{{user.country}}</td>
+                                <td><input type="button" value="delete" class="btn btn-circle" ng-click="deleteUser(user.id)"></td>
+                             </tr>
+                        </table>
+                    </div>
+                     <div>
+                         <label><input type="text" ng-model="client" placeholder="user id" class="form-control">
+                         <input type="button" value="load clients" ng-click="postClients()"></label>
+                      </div>
+                    <div class="panel panel-default">
+                          <table>
+                            <tr>
+                                <th>Id</th>
+                                <th>userId</th>
+                                 <th>telephone</th>
+                                 <th>lookingFor</th>
+                                 <th>timestamp</th>
+                                 <th>timeTaken</th>
+                                 <th>workDetails</th>
+                                 <th>situationOfWorkAtThisTime</th>
+                            </tr>
+                            <tr ng-repeat="client in clients | filter:client">
+                                <td>{{client.Id}}</td>
+                                <td>{{client.userId}}</td>
+                                <td>{{client.telephone}}</td>
+                                <td>{{client.lookingFor}}</td>
+                                <td>{{client.timestamp}}</td>
+                                <td>{{client.timeTaken}}</td>
+                                <td>{{client.workDetails}}</td>
+                                <td>{{client.situationOfWorkAtThisTime}}</td>
+                                <td><input type="button" value="delete" class="btn btn-circle" ng-click="deleteClients(client.Id)"></td>
+                             </tr>
+                        </table>
+                    </div>
+                    <div>
+                         <label><input type="text" ng-model="adminprofessinal" placeholder="user id" class="form-control">
+                         <input type="button" value="load professionals" ng-click="postProfessionals()"></label>
+                      </div>
+                    <div class="panel panel-default">
+                          <table>
+                            <tr>
+                                <th>Id</th>
+                                <th>userId</th>
+                                 <th>telephone</th>
+                                 <th>remarks</th>
+                                 <th>profession</th>
+                                 <th>timestamp</th>
+                                 <th>workSession</th>
+                                 <th>lookingForJobThisTime</th>
+                            </tr>
+                            <tr ng-repeat="professional in professionals | filter:profession">
+                                <td>{{professional.Id}}</td>
+                                <td>{{professional.userId}}</td>
+                                <td>{{professional.telephone}}</td>
+                                <td>{{professional.remarks}}</td>
+                                <td>{{professional.profession}}</td>
+                                <td>{{professional.timestamp}}</td>
+                                <td>{{professional.workSession}}</td>
+                                <td>{{professional.lookingForJobThisTime}}</td>
+                                <td><input type="button" value="delete" class="btn btn-circle" ng-click="deleteProfessional(professional.Id)"></td>
+                             </tr>
+                        </table>
+                    </div>
+                   
+                    <button type="button" ng-click="getWebCollections()">load web collections</button><br><br>
+                    <input type="text" ng-model="webCollectionAutoId" disabled="true" placeholder="webid">
+                    <input type="text" ng-model="webCollectionId" placeholder="webcollection id">
+                    <input type="text" ng-model="english" placeholder="english">
+                    <input type="text" ng-model="tigrina" placeholder="tigrina">
+                    <input type="text" ng-model="dutch" placeholder="dutch">
+                    <button ng-click="uploadWebCollectionPicture()">upload picture</button>
+                    <div ng-show="showWebCollectionPictureUploader">
+                            <input type="file" id="fileInput" />
+                            <hr>
+                            <img-crop image="myImage" result-image="myCroppedImage" class="pull-right"></img-crop>
+                            <img ng-src="{{myCroppedImage}}" name="myFile1" width="100" height="100"/>
+                            <hr>
+                      <button ng-click="uploadCropedImageAtWebCollection()" class="btn btn-primary" translate="saveUpdate"></button>
+                    </div><br>
+                    <input type="button" class="btn btn-primary" ng-click="addWebCollection()" value="add">
+                    <button class="btn btn-warning" ng-click="updateWebCollection()">update</button> <button ng-click="deleteWebCollection()" class="btn btn-danger">delete</button>
+                    <label for="">{{doneSuccefully}}</label>
+                     <div class="panel panel-default">
+                          <table>
+                            <tr>
+                              <th>id</th>
+                              <th>webcollectionId</th>
+                               <th>English</th>
+                               <th>tigrina</th>
+                               <th>dutch</th>
+                               <th>Action</th>
+                          </tr>
+                              <tr ng-repeat="item in allWebCollections">
+                                <td>{{item.Id}}</td>
+                                <td>{{item.webCollectionId}}</td>
+                                <td>{{item.english}}</td>
+                                <td>{{item.tigrina}}</td>
+                                <td>{{item.dutch}}</td>
+                                <td> <button ng-click="editWebCollection(item.Id,item.webCollectionId,item.english,item.tigrina,item.dutch)" class="btn btn-primary">Edit</button> </td>
+                             </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    <!-- end wrapper -->

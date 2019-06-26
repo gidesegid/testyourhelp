@@ -1,0 +1,389 @@
+header {
+    background-color: #8629b2;
+    color: #fff;
+    min-height: 70px;
+    border-bottom: #e8491d 1px solid;
+    width: 100%;
+}
+header .title {
+    font-family:'Rokkitt' 
+}
+
+.languages{
+  color:white;
+}
+.homePageNavigationsMenu{
+  font-size: 20px;
+  color: white;
+}
+.contactUs{
+   background-color: white;
+   font-size: 20px;
+}
+.contactHeader{
+    text-align: center;
+    color: green;
+    font-size: 20px;
+}
+
+body {
+    line-height: 1.5;
+    padding: 0;
+    margin: 0;
+    background-image: url("/assets/img/background2.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
+    height: 100%;
+
+}
+.homePageIntroText{
+   font-family:'Rokkitt';
+   font-size:18px;
+   color:white;
+   margin-left: 30px;
+}
+.menuList{
+   font-size:20px;
+}  
+.searchEmployeerOrEmployee{
+  background-color:grey;
+}
+.listOfSearchEmployeerOrEmployee{
+  background-color: white;
+  margin-left: 10;
+  margin-right: 10;
+}
+.autocompletLable{
+ background-color:white !important;
+}
+.searchButton{
+  width: 100px;
+  height: 50px;
+}
+.searchTitle{
+  font-weight: bold !important;
+  font-size: 20 !important;
+  color:blue !important;
+  font-family:"Times New Roman", Times, serif !important;
+}
+/*about page*/
+.about{
+  background-color:white;
+  font-size:20px;
+  margin-left: 20;
+  margin-right: 20;
+}
+/*contact us*/
+.contactus{
+   background-color:rgb(186, 176, 152);
+   margin-right: 50px;
+   margin-left: 20px;
+   width: 500px;
+}
+/*login page....................................................................*/
+a:hover,
+a:focus,
+a:active {
+  color: red;
+  text-decoration: none;
+}
+.container{
+  width: 100%;
+}
+.alert-danger{
+  color: #fff;
+  background-color:#F44336;
+}
+.carousel-inner > .item > img,
+
+.languageStyle{
+  font-family:Script MT;
+  color: blue;
+  margin:0;
+}
+.loginHeadTitle{
+  color: rgb(163, 65, 244);
+}
+.box-containerLogin{
+  width: 300px;
+  height: 400px;
+    padding: 10px;
+    margin-left: 60%;
+    border: solid 3px rgb(102, 224, 210);
+    box-shadow: 0px 2px 100px 6px rgba(0,0,0,0.35);
+  background-color:rgba(80, 208, 193, 0.77);
+  font-weight: bold;
+
+}
+.box-containerRegistration{
+  width: 400px;
+  height: 680px;
+    display:block;
+    padding: 5px;
+    margin-left: 10%;
+    border: solid 3px rgb(102, 224, 210);
+    box-shadow: 0px 2px 100px 6px rgba(0,0,0,0.35);
+  background-color:rgba(80, 208, 193, 0.77);
+}
+.forgetPasswordLabel{
+  font-size: 16px;
+  color: #4e42f4;
+}
+.registerLabel{
+  font-size: 20px;
+  font-weight: bolder;
+  color: #4e42f4;
+}
+.loginForgetPassword{
+  margin-top:50px;
+  width: 300px;
+  height: 400px;
+    display:block;
+    padding: 5px;
+    margin-left: 10%;
+    border: solid 3px rgb(102, 224, 210);
+    box-shadow: 0px 2px 100px 6px rgba(0,0,0,0.35);
+  background-color:rgba(80, 208, 193, 0.77);
+}
+.alreadyHaveAccount{
+  color: blue;
+  font-size: 20px;
+  
+}
+.heading{
+  padding: 15px;
+  text-align: center;
+}
+
+.register{
+  margin-top: 1px;
+}
+.password-group,
+.username-group,
+.btnbg{
+  margin-bottom: 25px;
+}
+.info{
+  color: rgb(170, 244, 66);
+  font-size: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
+  font-family:Algerian;
+}
+.signup-box{
+  text-align: center;
+  margin-top:20px;
+}
+@media screen and (max-width: 700px) {
+  .index{
+    padding: 20px;
+  }
+  .box-container{
+    margin: 0px auto;
+    width: 50%;
+  }
+}
+.loadCountries{
+  font-size: 16;
+  font-weight: bold;
+  color:red !important;
+}
+.loadCities{
+  font-size: 16;
+  font-weight: bold;
+  color:red !important;
+}
+.login{
+  margin-top: 20px;
+  margin-left:100px;
+}
+/*sell item at home page*/
+table{background-color:white; }
+thead {color:green;}
+tbody {color:blue;}
+tfoot {color:red;}
+table,th,td
+{border:1px solid black;}
+.headerBackGround{
+  background-color:#8629b2;
+}
+[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak{
+  display: none !important;
+}
+.headerText{
+  color:white;
+  font-size:20px;
+}
+.catagories{
+  font-size:24px;
+}
+.listOfBoughtItemsTable{
+  border:1;
+  width:95%;
+}
+.saleThingsCaterogries{
+  background-color:rgb(234, 190, 171);
+  justify-content: left;
+}
+.totalItemPrice{
+  font-size:20
+}
+/*news at home page*/
+.filterNews{
+    background-color:rgb(216, 210, 211) !important;
+}
+.newstitle{
+    list-style-type: none !important;
+}
+/*travel searches at home page*/
+ .travelSideBar{
+        background-color:rgb(234, 217, 204);
+       }
+       .airPlaneAndMoneyTransfer{
+        padding-left:10px;
+        padding-right:10px;
+       }
+       .transportsAndPassengersList{
+        overflow-y: scroll
+        height:700px
+        background-color:white;
+       }
+       .passengerTableAtHomePage{
+          border:1
+          width:100%
+       }
+       .listType{
+        color:white;
+       }
+       .transportTableAtHomePage{
+          border:1
+          width:100%
+       }
+       .btn-offline{
+        background-color: grey;
+       }
+       .passengerTable{
+        background-color:white;
+       }
+       .transportTable{
+        background-color:rgb(226, 226, 217);
+       }
+       .searchJourney{
+        background-color:rgb(160, 185, 219) !important;
+       }
+       /*style for image*/
+       
+.gallery{
+  width: 1000px;
+  margin:auto;
+}
+
+.gallery ul{
+  list-style: none;
+}
+.gallery li{
+ float: left;
+ margin:10px;
+}
+.itemForSellGallery{
+  float: left;
+  margin:0px;
+ }
+.gallery img{
+    display: block;
+  padding:5px;
+  background-color:white;
+  box-shadow: 1px 2px #000;
+}
+.profileImage img{
+  display: block;
+  padding:1px;
+  background-color:#42517f;
+  box-shadow: 1px 2px #000;
+}
+.profileImage img:hover{
+  border: 1px solid #fff;
+}
+.workstyle{
+  font-size: 20px;
+  
+}
+.myalert{
+  color:green;
+  font-size: 20px;
+}
+.customHr {
+    width: 95%
+    font-size: 1px;
+    color: rgba(0, 0, 0, 0);
+    line-height: 1px;
+    background-color: grey;
+    margin-top: -6px;
+    margin-bottom: 10px;
+}
+.mainTable{
+    background-color: white;
+  } 
+.columnOfTable{
+  background-color: grey;
+  color: white;
+  } 
+  .boughtItems{
+    width: 95%;
+  }
+  .tableTitle {
+  background-color: #4CAF50;
+  color: white;
+}
+/*news*/
+.news
+{
+    margin-left: 0px;
+    float: left;
+    height:500px;
+    width:950px;
+    background: #F5F5F5;
+    overflow-y: scroll;
+    margin-bottom: 25px;
+}
+#news::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+    border-radius: 10px;
+}
+#news::-webkit-scrollbar
+{
+    width: 10px;
+    background-color: #F5F5F5;
+}
+#news::-webkit-scrollbar-thumb
+{
+    background-color: #3366FF;
+    border-radius: 10px;
+    background-image: -webkit-linear-gradient(0deg,
+                                              rgba(255, 255, 255, 0.5) 25%,
+                                              transparent 25%,
+                                              transparent 50%,
+                                              rgba(255, 255, 255, 0.5) 50%,
+                                              rgba(255, 255, 255, 0.5) 75%,
+                                              transparent 75%,
+                                              transparent)
+}
+/* issue */
+.issueTitle{
+  justify-content: center;
+  background-color:rgb(186, 176, 152);
+  text-align: center;
+  font-stretch:ultra-expanded;
+
+}
+.issueList{
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.issues.list{
+  margin-left: 20px;
+  margin-right: 20px;
+}

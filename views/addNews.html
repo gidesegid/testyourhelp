@@ -1,0 +1,114 @@
+
+        <div id="page-wrapper">
+            <div class="row">
+                 <!-- page header -->
+                <div class="col-lg-12">
+                    <h3 class="page-header" translate="dailyLifeHappeningsRegistrations"></h3>
+                </div>
+                <!--end page header -->
+            </div>
+            <div class="row" ng-controller="newscontroller">
+                <div class="col-lg-12"> 
+                      <div class="col-lg-3">
+                           <input type="hidden" ng-model="newsProviderId">
+                           <input type="hidden" ng-model="newsTextId">
+                           <input type="hidden" ng-model="newsMainTitleId">
+                           <input type="hidden" ng-model="newsSubTitleId">
+                           <input type="hidden" ng-model="newsprovidername" class="form-control" disabled="false">
+                          <label translate="telephone"></label><input type="text" ng-model="newsprovidertele" class="form-control">
+                        <label translate="catagories"></label>
+                        <span ng-if="languageKey==undefined">
+                          <select class="form-control" ng-model="$parent.historyType" ng-change="changeGender(historyType.Id)"
+                            ng-options="dailyLife as dailyLife.english for dailyLife in issueItems">
+                         </select>
+                        </span>
+                        <span ng-if="languageKey=='EN'">
+                          <select class="form-control" ng-model="$parent.historyType" ng-change="changeGender(historyType.Id)"
+                            ng-options="dailyLife as dailyLife.english for dailyLife in issueItems">
+                         </select>
+                        </span>
+                        <span ng-if="languageKey=='TG'">
+                          <select class="form-control" ng-model="$parent.historyType" ng-change="changeGender(historyType.Id)"
+                            ng-options="dailyLife as dailyLife.tigrina for dailyLife in issueItems">
+                         </select>
+                        </span>
+                        <span ng-if="languageKey=='NL'">
+                          <select class="form-control" ng-model="$parent.historyType" ng-change="changeGender(historyType.Id)"
+                            ng-options="dailyLife as dailyLife.dutch for dailyLife in issueItems">
+                         </select>
+                        </span>
+                        <label translate="title"></label><input type="text" ng-model="newsMainTitle" class="form-control"><hr>
+                         <label translate="subTitle"></label><input type="text" ng-model="newsSubTitle" class="form-control"><br>
+                          <button ng-click="newSubTitle()" class="btn btn-warning" translate="addNewSubTitle"></button><hr>
+                            <button ng-click="newStart()" class="btn btn-danger" translate="startNew"></button>
+                      </div>
+                      <div class="col-lg-9">
+                           <label translate="writeDetailsHereBelow"></label><textarea rows="10" cols="70" ng-model="newsText" class="form-control"></textarea><hr>
+                            <div class="pull-left">
+                                <button class="btn btn-primary" ng-click="submitNews()" translate="sendNewsText" ng-disabled="newsButtonDisabled"></button><br>
+                                <p class="alert-danger">{{emptyField}}</p>
+                                <hr>
+                                <label translate="uploadImageOrVidio"></label><input type="checkbox" ng-model="fileUpload" ng-disabled="disabledfileUpload">
+                                <p class="alert-warning">{{fileUploadSuccess}}</p>
+                                <div ng-show="fileUpload">
+                                      <p translate="newsPicture"></p>
+                                        <input type="file" id="fileInput" />
+                                        <br>
+                                        <div class="pull-right col-lg-6">
+                                            <img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+                                        </div>
+                                        <div>
+                                            <label translate="cropedNewsPicture"></label><br>
+                                            <div class="alert-warning">
+                                              <img ng-src="{{myCroppedImage}}" name="myFile1" width="300" height="300"/>
+                                            </div>
+                                            <hr>
+                                            <button ng-click="uploadNewsFile()" class="btn btn-primary" translate="uploadNewsImage"></button>
+                                        </div>
+                                </div>
+                            </div>
+                           
+                      </div>
+                </div>
+            </div>
+       
+    <script>
+             $(document).ready(function() {
+                 $("#fileUpload").on('change', function() {
+                   //Get count of selected files
+                   var size = $('#fileUpload')[0].files[0].size;
+                   if(size>=32822685){
+                     $('#uploadImageToNewsId').prop("disabled", true);
+                     $('#sizeOfDocumentForPost').text("this file is big change another one")
+                   }
+                   var countFiles = $(this)[0].files.length;
+                   var imgPath = $(this)[0].value;
+                   var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                   var image_holder = $("#image-holder");
+                   image_holder.empty();
+                   if (extn == "jpg" || extn == "jpeg" || extn == "mp4") {
+                     if (typeof(FileReader) != "undefined") {
+                       //loop for each file selected for uploaded.
+                       for (var i = 0; i < countFiles; i++)
+                       {
+                         var reader = new FileReader();
+                         reader.onload = function(e) {
+                           //alert(this.files[0].size);
+                           $("<img />", {
+                             "src": e.target.result,
+                             "class": "thumb-image img-responsive"
+                           }).appendTo(image_holder);
+                         }
+                         image_holder.show();
+                         reader.readAsDataURL($(this)[0].files[i]);
+                       }
+                     } else {
+                       alert("This browser does not support FileReader.");
+                     }
+                   } else {
+                     alert("Pls select images or vidio only");
+                   }
+                 });
+             });
+    </script>
+    

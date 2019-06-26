@@ -1,0 +1,69 @@
+            <!--  page-wrapper -->
+        <div id="page-wrapper">
+            <div class="row" ng-controller="professionalCtrl">
+            <br><br>
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                           <p translate="professionRegistration"></p>
+                        </div>
+                        <div>
+                            <p id="reactionAlert" class="alert alert-info myalert"></p>
+                        </div>
+                       <div class="panel-body">
+                            <div class="col-lg-6">
+                                <form name="proForm" novalidate>
+                                  <label translate="telephone"></label>
+                                   <input type="text" id="teleId" ng-model="pTele" ng-minlength="8" ng-maxlength="14" class="form-control" name="pTele" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                   <p ng-show="proForm.pTele.$error.minlength">not valid number</p>
+                                    <p ng-show="proForm.pTele.$error.maxlength">not valid number</p>
+                                     <label translate="mainProfession"></label>
+                                        <autocomplete ng-model="profession" attr-placeholder="profession..." profession-enter="onEnter()" click-activation="true" data="professionDatas"  on-type="fillProfession" on-select="professionSelection"></autocomplete>
+                                        <label translate="yourWorkingPeriodIs"></label>
+                                        <span ng-if="languageKey==null"><input type="hidden" ng-model="workingPeriodId">
+                                          <select class="form-control" ng-options="workingPeriod as workingPeriod.english for workingPeriod in workTimeDatas track by workingPeriod.Id" ng-change="workTimechanged(workingPeriod.Id)" ng-model="$parent.workingPeriod"><option value="">{{workingPeriod}}</option></select>
+                                        </span>
+                                        <span ng-if="languageKey=='EN'">
+                                          <select class="form-control" ng-options="workingPeriod as workingPeriod.english for workingPeriod in workTimeDatas track by workingPeriod.Id" ng-change="workTimechanged(workingPeriod.Id)" ng-model="$parent.workingPeriod"><option value="">{{workingPeriod}}</option></select></select>
+                                        </span>
+                                        <span ng-if="languageKey=='TG'">
+                                          <select class="form-control" ng-options="workingPeriod as workingPeriod.tigrina for workingPeriod in workTimeDatas track by workingPeriod.Id" ng-change="workTimechanged(workingPeriod.Id)" ng-model="$parent.workingPeriod"><option value="">{{workingPeriod}}</option></select></select>
+                                        </span>
+                                        <span ng-if="languageKey=='NL'">
+                                          <select class="form-control" ng-options="workingPeriod as workingPeriod.dutch for workingPeriod in workTimeDatas track by workingPeriod.Id" ng-change="workTimechanged(workingPeriod.Id)" ng-model="$parent.workingPeriod"><option value="">{{workingPeriod}}</option></select></select>
+                                        </span>
+
+                                         <label translate="IAmNow"></label><input type="hidden" ng-model="pWorkSituationId">
+                                         <span ng-if="languageKey==null">
+                                            <select  class="form-control" ng-options="status as status.english for status in statuses track by status.Id" ng-change="pworksituation(pWorkSituation.Id)" ng-model="$parent.pWorkSituation" title="choose profession"><option value="">{{pWorkSituation}}</option></select>
+                                          </select>
+                                         </span>
+                                          <span ng-if="languageKey=='EN'">
+                                            <select  class="form-control" ng-options="status as status.english for status in statuses track by status.Id" ng-change="pworksituation(pWorkSituation.Id)" ng-model="$parent.pWorkSituation" title="choose profession" ><option value="">{{pWorkSituation}}</option>
+                                          </select>
+                                         </span>
+                                          <span ng-if="languageKey=='TG'">
+                                            <select  class="form-control" ng-options="status as status.tigrina for status in statuses track by status.Id" ng-change="pworksituation(pWorkSituation.Id)" ng-model="$parent.pWorkSituation" title="choose profession" ><option value="">{{pWorkSituation}}</option>
+                                          </select>
+                                         </span>
+                                          <span ng-if="languageKey=='NL'">
+                                            <select  class="form-control" ng-options="status as status.dutch for status in statuses track by status.Id" ng-change="pworksituation(pWorkSituation.Id)" ng-model="$parent.pWorkSituation" title="choose profession" ><option value="">{{pWorkSituation}}</option>
+                                          </select>
+                                         </span>
+                                </form>
+                            </div>
+                              <div class="col-lg-6">
+                                    <label translate="generalSummaryAboutYou"></label>
+                                    <textarea id="remarkId" ng-model="pRemark" name="pRemark" cols="5" rows="10" class="form-control" required></textarea>
+                                    <p ng-show="proForm.pRemark.$invalid && !proForm.pRemark.$pristine" class="help-block">Enter remarks</p>
+                                    <button ng-disabled="proForm.$invalid" ng-click="saveProfessionInfo()" class="btn btn-primary" translate="saveUpdate"></button>
+                                    <button class="btn btn-success pull-right">
+                                        <a  href="workTransactions/{{userId}}" class="fa fas fa-user-md sideBarFontSize" translate="backToWorkTransactions"></a>
+                                    </button>
+                                    <input type="hidden" name="professionalId" ng-model="professionalId">
+                               </div>
+                        </div>
+                </div>
+            </div><!-- end page-wrapper -->
+    </div>
+    <!-- end wrapper -->

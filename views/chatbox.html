@@ -1,0 +1,181 @@
+            <!--  page-wrapper -->
+        <div id="page-wrapper">
+           <br>
+           <h2 translate="chatRoom">Chat Rooms</h2>
+            <p>Chat room is just for conversation </p>
+           <div class="modal" id="saleItemIdInfo" tablindex="-1" data-backdrop="static" data-keyboard="false">   <!--info modal-->
+              <div class="modal-dialog model-lg">
+                 <div class="modal-content">
+                     <div class="modal-header">
+                       <button class="close" data-dismiss="modal">&times;</button>
+                     </div>
+                     <div class="modal-body">
+                       <div class="">
+                           <a href="">{{catagories}}</a>
+                           <div class="gallery">
+                               <img  ng-src="/saleThingsImageCollector/{{saleItemfileName}}" id="1" data-scale="2.4" height="200" width="200" class="thumbnail"></a>
+                               <label>{{saleItemName}}</label><br>
+                                <span translate="price"></span>
+                                <p>{{price}}&nbsp;{{unit}}</p>
+                            </div>
+                         </div>
+                          <div class="">
+                            <a href="#" ng-click="getDetailsOfItemForSale()">get details of this item</a>
+                            <table border="1" style="width:100%">
+                                 <thead>
+                                     <tr>
+                                         <th>measurment</th>
+                                         <th>quantity</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody ng-repeat="data in saleItemDetails">
+                                     <tr>
+                                          <td>{{data.size}}</td>
+                                          <td>{{data.amount}}</td>
+                                     </tr>
+                                 <tbody>
+                             </table>
+                          </div>
+                       </div>
+                     </div>
+                 </div>
+              </div>
+            <div class="row">
+               <div class="container">
+                        <div>
+                             <p id="reactionAlert" class="alert alert-info myalert"></p>
+                        </div>
+                   <div class="col-lg-7" ng-show = "IsVisible">
+                        <div class="panel panel-default">
+                            <div class="panel-heading top-bar">
+                                <div class="col-md-8 col-xs-8">
+                                    <h3 class="panel-title" ng-model="roomName"><span><img src="/assets/img/chat-room-icon.png"></span><p translate="youAreInRoom"></p>{{roomName}} <p translate="roomOwner"></p><span class="input-group-btn pull-right">
+                                    </span>
+                                </h3>
+                                    
+                                    
+                                </div>
+                                <div class="col-md-4 col-xs-4" style="text-align: right;">
+                                </div>
+                            </div>
+                            <div class="panel-body msg_container_base" id="promptAnswerBlock">
+                                <div ng-repeat="user in users" class="row msg_container base_receive" on-finish-render="ngRepeatFinished">
+                                    <div class="col-md-10 col-xs-10">
+                                        <div  class="messages msg_receive">
+                                          <strong>{{user.username}}</strong> : {{user.message}} <br>
+                                          <span class="label label-info ng-binding ">{{user.date | date: 'h:mma'}}</span>
+                                       </div>
+                                   </div>
+                               </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="input-group">
+                                    <input id="btn-input" type="text" ng-if="languageKey=='TG'" ng-model="message" class="form-control input-sm chat_input" placeholder="መለአኽትኹም ኣብዚ ጸሓፉ" on-enter="doPost(message)" />
+                                    <input id="btn-input" type="text" ng-if="languageKey=='EN'" ng-model="message" class="form-control input-sm chat_input" placeholder="Type message here" on-enter="doPost(message)" />
+                                     <input id="btn-input" type="text" ng-if="languageKey=='NL'" ng-model="message" class="form-control input-sm chat_input" placeholder="Type message here" on-enter="doPost(message)" />
+                                    
+                                      <span class="input-group-btn">
+                                    <button class="btn btn-primary btn-sm" ng-click="doPost(message)" id="btn-chat" translate="send"></button>
+                                    </span>
+
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+                   <div class="col-lg-3" ng-hide = "IsVisible">
+                        <div ng-model="visible" ng-hide="visible">
+                             <input type="text" ng-model="roomName" class="form-control" placeholder="room name"><br>
+                              <textarea ng-model="roomDescription" placeholder="room description" class="form-control"></textarea>
+                             <!-- <input type="button" > -->
+                             <button translate="createRoom" ng-model="Croom" ng-click="createRoom();rooms()" class="btn btn-primary" ng-disabled="Croom"></button>
+                        </div><br>
+                        <div class="panel"> <label translate="joinToRooms"></label>
+                          <ul ng-repeat="room in rooms">
+                            <li style="list-style-type: none;"><a href="#" ng-click="getRoomNumber(room.roomNumber,room.roomName);ShowHide();joinRoom()"><span class="user-circle-online btn btn-sm btn-success btn-circle "></span>&nbsp;<label>{{room.roomName}}</label><span class="pull-right"><p>{{room.numberOfMembersAtThisTime}}</p></span> <br>
+                                   <p>{{room.roomDescription}}</p>
+                            </li></a>
+                          </ul>
+                        </div>
+                   </div>
+                   <div class="col-lg-3" ng-show = "IsVisible">
+                       <div>
+                            <button ng-click="ShowHide()" class="btn btn-primary" translate="backToRooms"></button><br>
+                       </div>
+
+                       <div class="panel"> <label translate="memebers"></label>
+                            <ul ng-repeat="user in roomMember track by $index">
+                                <li>
+                                   <img ng-src="/userImage/{{user.photo}}" width="30" height="30"> {{user.name}}
+                                </li>
+                            </ul>
+
+                       </div>
+                   </div>
+                </div>
+            </div>
+            <div class="container" id="mydiv" ng-show="chatbox">
+                        <div class="row chat-window col-xs-6 col-sm-3 col-md-4 col-lg-4 chatWindow" id="chat_window_1">
+                           <div class="col-xs-12 col-md-12">
+                                <div class="panel panel-default">
+                                    <div class=" chatHeader panel-heading top-bar">
+                                        <div class="col-md-8 col-xs-8">
+                                             <h3 class="panel-title" ng-model="toName"><span><img src="/assets/img/icons8-Chat-48.png"></span>{{toName}}
+                                             </h3>
+                                        </div>
+                                        <div id="messageBody" class="col-md-4 col-xs-4 messageBody">
+                                            <p ng-if="toName!=='Client'">
+                                              <button id="minim_chat_window1" class="btn btn-circle icon_minim btn-danger" ng-click="minimizChat()">{{chatSizedTo}}</button>&nbsp;&nbsp;<button class="btn btn-circle btn-danger closeChatIcon" ng-click="closeChat(toName)">X</button>
+                                            </p>
+                                            <p ng-if="toName=='Client'"> <button id="minim_chat_window1" class="btn btn-circle btn-danger icon_minim" ng-click="minimizChat()">{{chatSizedTo}}</button>&nbsp;&nbsp;<button class="btn btn-circle closeChatIcon btn-danger" ng-click="closeChatWithSupplier()">X</button></p>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body msg_container_base"  id="promptAnswerBlock">
+                                        <div ng-show="hideChat" ng-repeat="user in minimizedData" class="row msg_container base_receive" on-finish-render="ngRepeatFinished">
+                                         <div>
+                                              <div class="col-md-2 col-xs-2 avatar" ng-if="toName!=='Client'">
+                                                <img ng-src="/userImage/{{user.photo}}" class=" img-responsive ">
+                                            </div>
+                                           <div  class="col-md-10 col-xs-10">
+                                              <div  class="messages msg_receive">
+                                                 <p style="font-size:14px;" ng-if="toName!=='Client'">{{user.message}}</p>
+                                                 <p  class="userMessage" ng-if="toName=='Client'">{{user.message}}</p>
+                                                <small class="label label-info ng-binding ng-if="toName=='Client'">{{user.username}}</small> <span am-time-ago="user.date"></span>
+                                              </div>
+                                           </div>
+                                         </div>
+                                        </div>
+                                       <div ng-hide="showChat" ng-repeat="user in postUserMessagesFromChat" class="row msg_container base_receive" on-finish-render="ngRepeatFinished">
+                                         <div>
+                                              <div class="col-md-2 col-xs-2 avatar" ng-if="toName!=='Client'">
+                                                <img ng-src="/userImage/{{user.photo}}" class=" img-responsive ">
+                                            </div>
+                                           <div  class="col-md-10 col-xs-10">
+                                              <div  class="messages msg_receive">
+                                                 <p style="font-size:14px;" ng-if="toName!=='Client'">{{user.message}}</p>
+                                                 <p  class="userMessage" ng-if="toName=='Client'">{{user.message}}</p>
+                                                <small class="label label-info ng-binding ng-if="toName=='Client'">{{user.username}}</small> <span am-time-ago="user.date"></span>
+                                              </div>
+                                           </div>
+                                         </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-footer chatboxFooter">
+                                      <div class="input-group" ng-if="toName!=='Client'">
+                                          <input  id="btn-input" type="text" ng-model="$parent.message" class="input1 form-control input-sm chat_input" placeholder="Write your message here..." on-enter="sendMessage(message)" />
+                                          <span class="input-group-btn">
+                                          <button   class="btn btn-primary btn-sm" id="btn-chat"  ng-click="sendMessage(message)" translate="send"></button>
+                                          </span>
+                                      </div>
+                                      <div class="input-group" ng-if="toName=='Client'">
+                                          <input id="btn-input" type="text" ng-model="$parent.message" class="input1 form-control input-sm chat_input" placeholder="Write your message here..." on-enter="sendMessageBetweenClientAndSupplier(message)" />
+                                          <span  class="input-group-btn">
+                                              <button   class="btn btn-primary btn-sm" id="btn-chat"  ng-click="sendMessageBetweenClientAndSupplier(message)" >Send</button>
+                                          </span>
+                                      </div>
+                                    </div>
+                                </div>
+                           </div>
+                        </div>
+            </div>
+        </div>
+   

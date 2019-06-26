@@ -1,0 +1,167 @@
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <hr>
+
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 list-group">
+              <ul class="menuList">
+                 <p ng-model="selectedLanguage">{{selectedLanguage}}</p>
+                <li class="list-group-item list-group-item-success searchCriterias">&nbsp;&nbsp;<a class="fa fas fa-user-md" translate="jobSearch"  ng-click="toggle_searchJob()"></a></li>
+                <li class="list-group-item list-group-item-info searchCriterias">&nbsp;&nbsp;<a class="fa fas fa-user-md" translate="searchCandidate" ng-click="findCandidate()"></a></li>
+                <li class="list-group-item list-group-item-success searchCriterias">&nbsp;&nbsp;<a class="fa fas fa-building" href="login" ng-click="onClickLoginJobPosting()" translate="jobPosts"></a></li>
+                <li class="list-group-item list-group-item-warning searchCriterias">&nbsp;&nbsp;<a class="fa fas fa-exclamation-circle" href="login" ng-click="onClickLoginIssuePosting()" translate="issuePost"></a></li>
+                <li class="list-group-item list-group-item-warning searchCriterias">&nbsp;&nbsp;<a class="fa fas fa-headphones" href="newsAndServicesProvider"  translate="getNews">Getting upto date news,reading fictions</a></li>
+                <li class="list-group-item list-group-item-danger searchCriterias">&nbsp;&nbsp;<a class="fa fas fa-cart-arrow-down" ui-sref="sellProvides" ui-sref-active="activeState" translate="itemsForSale">Getting Items for sale</a></li>
+                <li class="list-group-item list-group-item-danger searchCriterias">&nbsp;&nbsp;<a class="fa fas fa-car" href="transportHomePage" translate="journey"></a></li>
+                <li class="list-group-item list-group-item-danger searchCriterias">&nbsp;&nbsp;<a class="fa fas fa-exclamation-circle sideBarFontSize" href="issuesAndAdvices" translate="issuesAndSuggestions" ng-click="activePage('#issues')"></a>
+                </li>
+              </ul>
+        </div>
+
+
+        <div class="" ng-hide="HomePageContent">
+         <span class="homePageIntroText" ng-hide="HomePageContent" translate="homePageInfo"></span>
+
+         <ul class="gallery">
+
+            <img src="/assets/img/work.jpg" alt="work city" width="800" height="300">
+        </ul>
+    </div>
+    
+  <div ng-show="searchBox">
+    <div class="col-lg-6 alert-success">
+      <br>
+       <strong translate="jobSearch"></strong><br>
+       <label class="alert-danger" ng-model="unfilledField">{{unfilledField}}</label>
+       <hr>
+      <label class="autocompletLable" translate="profPlaceHolder"></label>
+      <autocomplete ng-model="profession" attr-placeholder="profession" profession-enter="onEnter()" click-activation="true" data="professionDatas"  on-type="fillProfession" on-select="professionSelection"></autocomplete>
+      <hr>
+      <label class="autocompletLable" translate="country"></label>
+      <div class="alert-info pull-right">
+        <a href="" ng-click="loadCountries()" translate="loadCountry">Load countries</a>
+      </div>
+      <select class="form-control" ng-model="countryAtRegistration" ng-change="chooseCountryAtRegistration(countryAtRegistration.Id,countryAtRegistration.country)"
+      ng-options="country as country.country for country in countries">
+
+  </select>
+
+<hr>
+  <label class="autocompletLable" translate="city"></label>
+  <div class="alert-warning pull-right">
+    <a href="" ng-click="loadCities()" translate="loadCities">Load cities</a>
+  </div>
+  
+  <select class="form-control" ng-model="citiesAtRegistration" ng-change="chooseCityAtRegistration(citiesAtRegistration.id,citiesAtRegistration.cityName)"
+  ng-options="city as city.cityName for city in cities">
+</select>
+<br>
+
+<button ng-click="searchAjob()" class="btn btn-primary big-btn fa fas fa-search searchButton pull-right" translate="searchOnHomepage" ng-disabled="disableSearch"></button>
+<br>
+<hr>
+<div class="alert-danger">
+      <span ng-model="noResult">{{noResult}}</span>
+    </div>
+</div>
+</div>
+<div ng-show="jobsResult">
+       <a href="" ng-click="goBackToJobSearch()" translate="goBackToJobSearch" class="searchTitle">back to search</a>
+      <div class="searchEmployeerOrEmployee col-lg-9">
+           <div class="col-lg-4">
+                <ul ng-repeat="data in searchedData" class="listOfSearchEmployeerOrEmployee">
+                  <li style="list-style-type: none;">
+                      <h3><a href="http://{{data.url}}" target="_blank">{{data.lookingFor}}</a></h3>
+                      <p><a href="{{data.name}}">{{data.name}}</a> &nbsp;&nbsp;&nbsp;{{data.workCity}}  {{data.workCountry}}</p>
+                      <span ng-model="summary">{{data.summary}}</span>
+                      <a href="#" ng-click="getWorkDetails(data.Id)" translate="workToBeDone">see work details</a>
+                  </li>
+              </ul>
+           </div>
+        <!-- <ul ng-repeat="data in searchedDataFromExternal" class="listOfSearchEmployeerOrEmployee">
+           <li>
+               <h3><a href="#" ng-click="getWorkDetailsFromExternal()">{{data.lookingForProfession}}</a></h3>
+               <p><a href="{{data.name}}">{{data.companyName}}</a> &nbsp;&nbsp;&nbsp;{{data.workCity}}  {{data.workCountry}}</p>
+               <span ng-model="summary">{{data.summary}}</span>
+               <a href="#" ng-click="getWorkDetailsFromExternal()" translate="workToBeDone"></a>
+           </li>
+        </ul> -->
+        <br>
+        <div  class="col-lg-5 alert-warning">
+          <hr>
+         <label>{{workDetailsClientName}}</label>
+         <hr>
+         <p>{{workDetails}}</p>
+        </div>
+      </div>
+      
+  </div>
+<div ng-show="candidate">
+      <div class="col-lg-6 alert-info">
+        <br>
+        <strong translate="searchCandidate"></strong>
+        <br>
+       <label class="alert-danger" ng-model="unfilledField">{{unfilledField}}</label>
+        <hr>
+           <label class="autocompletLable" translate="profPlaceHolder"></label>
+           <autocomplete ng-model="profession" attr-placeholder="profession..." profession-enter="onEnter()" click-activation="true" data="professionDatas"  on-type="fillProfession" on-select="professionSelection"></autocomplete>
+           <hr>
+            <label class="autocompletLable" translate="country"></label>
+           <div class="alert-info pull-right">
+             <a href="" ng-click="loadCountries()" translate="loadCountry">Load countries</a>
+           </div>
+           
+              <select class="form-control" ng-model="countryAtRegistration" ng-change="chooseCountryAtRegistration(countryAtRegistration.Id,countryAtRegistration.country)"
+           ng-options="country as country.country for country in countries">
+             </select>
+             <hr>
+              <label class="autocompletLable" translate="city"></label>
+             <div class="alert-warning pull-right">
+               <a href="" ng-click="loadCities()" translate="loadcities">Load cities</a>
+             </div>
+             <select class="form-control" ng-model="citiesAtRegistration" ng-change="chooseCityAtRegistration(citiesAtRegistration.id,citiesAtRegistration.cityName)"
+             ng-options="city as city.cityName for city in cities">
+             </select>
+          <br>
+        <button ng-click="searchAprofessional()" class="btn btn-warning big-btn fa fas fa-search searchButton pull-right" translate="searchOnHomepage"></button>
+        <br>
+        <hr>
+        <div class="alert-danger">
+          <span ng-model="noResult">{{noResult}}</span>
+        </div>
+        <hr>
+      </div>
+
+</div>
+<div ng-show="professionalsSearchResults" class="col-lg-4">
+    <ul ng-repeat="professionals in listOfAllWorkers | filter:clientsAndProfessionals" class="listOfSearchEmployeerOrEmployee">
+      <a href="" ng-click="backToSearchProfessionalsPage()" translate="backToSearchProfessionalsPage" class="searchTitle">back to search professionals page</a>
+      <hr>
+      <li>
+           <div>
+               <label><img  ng-src="/userImage/{{professionals.photo}}" width="30" height="30">{{professionals.name}} </label>
+           </div>
+           <div>
+             <p class="pull-left"><label translate="profession"></label>:{{professionals.profession}}</p>
+             <p class="pull-right"><label translate="livesIn"></label>:{{professionals.livesIn}},{{professionals.country}}
+
+             </p>
+         </div>
+         <hr>
+         <div>
+             <p><a href="#" ng-click="professionalMotivation(professionals.Id)" translate="professionalMotivation">see motivation</a></p>
+         </div>
+      </li>
+    </ul>
+</div>
+<div class="col-lg-3 alert-info" ng-show="showWorkDetailsOfProfessional">
+  <hr>
+  <label>{{motivationFromProfessionName}}</label><br>
+  <p>{{motivation}}</p>
+</div>
+</div>
+</div>
+</div>
+</div>

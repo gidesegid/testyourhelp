@@ -1,0 +1,231 @@
+             <div>
+                <div class="col-lg-2 saleThingsCaterogries">
+                      <br>
+                      <input type="text" ng-model="categorieFilter" class="form-control" placeholder="type to filter">
+                      <hr>
+                      <ul  ng-repeat="category in getAvailableItemsToSale | filter:categorieFilter" class="catagories">
+                            <li>
+                              <div  ng-if="languageKey=='EN'" class="input-group">
+                                  <span ng-if="category.picture!==null">
+                                      <img  ng-src="/webCollectionImages/{{category.picture}}" width="30%" height="30%"></a>
+                                  </span>
+                                  <span><a href="#" ng-click="selectCategoryById(category.Id)">{{category.english}}</a></span>
+                                </div>
+                              <div ng-if="languageKey=='TG'">
+                                  <span ng-if="category.picture!==null" class="pull-right gallery">
+                                      <img  ng-src="/webCollectionImages/{{category.picture}}"></a>
+                                  </span>
+                                  <span ><a href="#" ng-click="selectCategoryById(category.Id)">{{category.tigrina}}</a></span>
+                              </div>
+                              <div ng-if="languageKey=='NL'">
+                                  <span ng-if="category.picture!==null" class="pull-right ">
+                                      <img  ng-src="/webCollectionImages/{{category.picture}}"></a>
+                                  </span>
+                                  <span ><a href="#" ng-click="selectCategoryById(category.Id)">{{category.dutch}}</a></span>
+                              </div>
+                             
+                              
+                            </li>
+                      </ul>
+                </div>
+                <div class="col-lg-10">
+                   <span class="pull-right"><button ng-click="getBoughtItems()" translate="getBoughtItems" class="btn btn-primary"></button><img src="/assets/img/shoppingCart.jpg" width="30" height="30"><label class="label label-danger">{{numberOfBougtItems}}</label></span>
+                   <hr>
+                  <div ng-show="boughtItems" class="boughtItems">
+                        <div class="panel panel-primary">
+                          <div class="panel-heading">items and payments</div>
+                          <div class="panel-body">
+                                 <table class="listOfBoughtItemsTable">
+                                      <thead>
+                                          <tr class="tableTitle">
+                                              <th translate="itemName"></th>
+                                              <th translate="price"></th>
+                                              <th translate="unit"></th>
+                                              <th translate="amount"></th>
+                                              <th translate="size">size</th>
+                                              <th translate="total"></th>
+                                              <th translate="action">action</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody ng-repeat="data in boughtThings">
+                                          <tr>
+                                               <td>{{data.itemName}}</td>
+                                               <td>{{data.price}}</td>
+                                               <td>{{data.unit}}</td>
+                                               <td>{{data.numberOfItems}}</td>
+                                               <td>{{data.size}}</td>
+                                               <td><label >{{data.total}}</label></td>
+                                               <td><button ng-click="delete(data.id);getTotal();" translate="delete">delete</button></td>
+                                          </tr>
+                                      <tbody>
+                                      <input type="hidden" ng-model="boughtThings" value="{{boughtThings}}">
+                                      <tfoot>
+                                        <tr>
+                                          <td><a href="" ng-click="getTotal()" translate="total">click here:</a></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td class="fa fa-eur totalItemPrice" aria-hidden="true" >{{totalItemsPrice}}</td>
+                                        </tr>
+                                      </tfoot>
+                                 </table>
+                                 <div class="modal" id="paymentModal" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                                          <div class="modal-dialog model-lg">
+                                              <div class="modal-content">
+                                                 <div class="modal-header">
+                                                   <button class="close" data-dismiss="modal">&times;</button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                    <form role="form" method="post" action="/getMolliePayments">
+                                                       <input type="hidden" name="languageKey" value="{{languageKey}}">
+                                                        <input type="hidden" name="theRequestComesFrom" value="salethingstable">
+                                                        <label translate="amountToPay"></label>:{{totalItemsPrice}}
+                                                        <input type="hidden" class="form-control" name="amount" value="{{totalItemsPrice}}">
+                                                        <input type="hidden" ng-model="boughtThings" value="{{boughtThings}}" name="boughtThings"><br>
+                                                         <input type="hidden" class="form-control" name="userId" value="{{userId}}"><br>
+                                                         <label translate="name">name</label>
+                                                        <input type="text" class="form-control" name="name" required>
+                                                        <label translate="surName" >sur name</label>
+                                                        <input type="text" name="surName" class="form-control" required>
+                                                        <label translate="email" >email</label>
+                                                        <input type="email" name="email" class="form-control" required>
+                                                        <label translate="telephone" >telephone</label>
+                                                        <input type="tele" name="telephone" class="form-control" required>
+                                                        <label translate="country" >country</label>
+                                                        <input type="text" name="country" class="form-control" value="{{country}}">
+                                                        <label translate="city">city</label>
+                                                        <input type="text" name="city" class="form-control" value="{{livesIn}}">
+                                                        <label translate="postCode">post code</label>
+                                                        <input type="text" class="form-control" name="postCode" required>
+                                                        <label translate="street"></label>
+                                                        <input type="text" name="street" class="form-control" required>
+                                                        <label translate="houseNumber"></label>
+                                                        <input type="text" name="houseNumber" class="form-control" required>
+                                                        <button type="submit" translate="payNow" class="btn btn-success" value="Pay" ></button>
+                                                    </form>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                 </div>
+                                 <hr>
+                                  <div class="panel-footer panel-warning">
+                                    <button class="btn btn-primary"> <a href="#paymentModal" data-toggle="modal" style="color:white;">pay</a></button>
+                                    <button class="btn btn-warning pull-right" translate="backToSalePage"  ng-click="backToSalePage()"  class="btn btn-primary">
+                                    </button>
+                                  </div>
+                          </div>
+                        </div>
+                  </div>
+                  <div class="modal" id="thingsToBuyModal" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog model-lg">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <button class="close" data-dismiss="modal">&times;</button>
+                               <h4 class="modal-title" translate="buyThingsPost"></h4>
+                               <div class="modal-body">
+                                   <ul ng-repeat="data in detailsOfProduct">
+                                         <li>
+                                              <div class="alert-warning">
+                                                <a href="">{{data.itemName}}</a>&nbsp;&nbsp; <label translate="price"></label> <span>:{{data.price}}&nbsp;{{data.unit}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                               <label for="" translate="size"></label>
+                                               <select class="" name="" ng-model="selectedSize" ng-change="onselectedSize(selectedSize)">
+                                                 <option ng-repeat="data in saleItemDetails">{{data.size}}</option>
+                                               </select>
+                                               <label translate="amount"></label>
+                                               <input type="number" step="1" min="1" max="100" ng-model="numberOfItems" value="{{1}}">
+                                                    <button  class="btn btn-primary" ng-click="buy(data.id,data.itemName,data.price,data.unit,numberOfItems,data.itemId);getTotal();" translate="buy" ng-show="buyDisplay" ng-disabled="!selectedSize"></button>
+                                               <button ng-click="cancel(data.id);getTotal();" translate="cancel" class="btn btn-danger" ng-show="cancelDisplay"></button>
+                                               <span ng-if="data.userId==userId"></span>
+                                              </div>
+                                             >
+                                                 <p>
+                                                   <img ng-src="/saleThingsImageCollector/{{data.fileName}}" id="1" height="400" width="400" class="thumbnail">
+                                                 </p>
+                                              
+                                             
+                                          </li>
+                                      </ul>
+                               </div>
+                           </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div ng-hide="items" class="panel panel-default">
+                      <div class="panel-body">
+                         <div class="gallery">
+                              <ul ng-repeat="data in postedItemsToSale | filter:categorieFilter">
+                                 <li class="thumbnail">
+                                     <div>
+                                         <a href="">{{data.catagories}}</a>
+                                     </div>
+                                      <div class="col-lg-8 pull-left text">
+                                         <span class="alert-warning"> {{data.description}}</span>
+                                      </div>
+                                      <div class="col-lg-4 pull-right">
+                                           <a href="#thingsToBuyModal" role="button"  data-toggle="modal" ng-click="seeDetailsOfProduct(data.id,data.catagories,data.itemName,data.description,data.fileName,data.place,data.price,data.unit);getDetailsOfItemForSale(data.id);">
+                                          <img  ng-src="/saleThingsImageCollector/{{data.fileName}}" id="1"  height="100" width="100" class="thumbnail"></a>
+                                          <div>
+                                          <label>{{data.itemName}}</label><br>
+                                           <span translate="price"></span>
+                                           <p>{{data.price}}&nbsp;{{data.unit}}</p><br>
+                                           <button type="button" name="button" ng-click="letsChat(data.userId,data.id)" translate="chatWithSupplier" class="btn-primary">chat with supplier</button>
+                                          </div>
+                                      </div>
+                                      <small class="alert-info">{{data.place}}</small>
+                                  </li>
+                              </ul>
+                         </div>
+                      </div>
+                      <div class="container" id="mydiv" ng-show="chatbox">
+                        <div class="row chat-window col-xs-6 col-sm-3 col-md-4 col-lg-4 chatWindow" id="chat_window_1">
+                           <div class="col-xs-12 col-md-12">
+                            <div class="panel panel-default">
+                                <div class="chatHeader panel-heading top-bar">
+                                    <div class="col-md-8 col-xs-8">
+                                         <h3 class="panel-title" ng-model="toName"><span><img src="/assets/img/icons8-Chat-48.png"></span>{{toName}}</h3>
+                                    </div>
+                                    <div id="messageBody" class="col-md-4 col-xs-4 messageBody">
+                                         <button id="minim_chat_window1" class="btn btn-circle btn-danger icon_minim" ng-click="minimizChat()">{{chatSizedTo}}</button>&nbsp;&nbsp;
+                                        <button class="btn btn-circle closeChatIcon btn-danger" ng-click="closeChatWithSupplier()">X</button>
+                                    </div>
+                                </div>
+                                <div class="panel-body msg_container_base" id="chatbox1">
+                                   <div ng-show="hideChat" ng-repeat="user in minimizedData" class="row msg_container base_receive" >
+                                       <div  class="col-md-10 col-xs-10" sell-chatbox-scroll-bottom="ngRepeatFinished">
+                                          <div  class="messages msg_receive">
+                                             <p class="userMessage">{{user.message}}</p>
+                                            <span class="label label-info ng-binding ">{{user.username}}</span><span am-time-ago="user.date"></span>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div ng-hide="showChat" ng-repeat="user in supplierMessage" class="row msg_container base_receive" >
+                                       <div  class="col-md-10 col-xs-10" sell-chatbox-scroll-bottom="ngRepeatFinished">
+                                          <div  class="messages msg_receive">
+                                             <p class="userMessage">{{user.message}}</p>
+                                            <span class="label label-info ng-binding ">{{user.username}}</span><span am-time-ago="user.date"></span>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="panel-footer chatboxFooter">
+                                  <div class="input-group">
+                                      <input id="btn-input" type="text" ng-model="message" class="form-control input-sm chat_input" placeholder="Write your message here..." on-enter="sendMessageBetweenClientAndSupplier(message)" />
+                                      <span class="input-group-btn">
+                                      <button class="btn btn-primary btn-sm" id="btn-chat" ng-click="sendMessageBetweenClientAndSupplier(message)" translate="send">Send</button>
+                                      </span>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+                  </div>
+                 
+                </div>
+              </div>
+           
+                           
+                          
+            
+              

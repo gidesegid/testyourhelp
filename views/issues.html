@@ -1,0 +1,203 @@
+ 
+            <!--  page-wrapper -->
+        <div id="page-wrapper">
+            <div class="row">
+                 <!--  page header -->
+                <div class="col-lg-12">
+                    <h1 class="page-header" translate="issuesAndSuggestions"></h1>
+                </div>
+                 <!-- end  page header -->
+                     <a href="#computerModal" data-toggle="modal" translate="reportHereIfYouHaveProblem"></a>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                   <div id="messagenotification-1" class="scrollbarMessagenotification">
+                        <table>
+                          <tr>
+                            <th>
+                               <label translate="problemType"></label>
+                                <span ng-if="languageKey=='EN'">
+                                   <select class="form-control" ng-model="$parent.filterByProblemType" ng-change="filterByProblemChanged(filterByProblemType.Id)"
+                                          ng-options="filterByProblemType as filterByProblemType.english for filterByProblemType in problemsCriteria">
+                                       </select>
+                                </span>
+                                <span ng-if="languageKey=='TG'">
+                                   <select class="form-control" ng-model="$parent.filterByProblemType" ng-change="filterByProblemChanged(filterByProblemType.Id)"
+                                          ng-options="filterByProblemType as filterByProblemType.tigrina for filterByProblemType in problemsCriteria">
+                                       </select>
+                                </span>
+                                <span ng-if="languageKey=='NL'">
+                                   <select class="form-control" ng-model="$parent.filterByProblemType" ng-change="filterByProblemChanged(filterByProblemType.Id)"
+                                          ng-options="filterByProblemType as filterByProblemType.dutch for filterByProblemType in problemsCriteria">
+                                       </select>
+                                </span>
+                                <input type="text" class="form-control" ng-model="searchIssue" placeholder="{{searchIssuesPlaceHolder}}">
+                            </th>
+                          </tr>
+                          <tr ng-repeat="problems  in computerProblem | filter:searchIssue">
+                            <td>
+                                <div>
+                                   <p>{{problems.problem}}</p>
+                                   <p><img src="/userImage/{{problems.photo}}"  width="30" height="30">{{problems.username}}</p>
+                                   <span am-time-ago="problems.timestamp"></span>
+                                </div>
+                                <div>
+                                  <a href="#suggestion" data-toggle="modal" ng-click="getProblemId(problems.id)" translate="writeSuggestion"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="" ng-click="lookSuggestions(problems.id)" translate="seeSuggestion"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span ng-if="problems.userId===userId"><button class="btn btn-danger" ng-click="delete(problems.id)" translate="delete"></button></span>
+                                </div>
+                            </td>
+                          </tr>
+                        </table>
+                   </div>
+                </div>
+
+                <div class="modal" id="suggestion" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                   <div class="modal-dialog model-lg">
+                       <div class="modal-content">
+                           <div class="modal-header">
+                                <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                            <textarea cols="10" rows="5" ng-model="suggestionBox" class="form-control"></textarea>
+                                  <button translate="submitSuggestion" class="btn btn-primary" data-dismiss="modal" ng-click="givesug()">&times;</button>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+                <div class="col-lg-6">
+                   <div class="panel panel-default" >
+                      <div class="panel-body scrollbarNotification" id="notification-1" >
+                              <table>
+                                    <thead style="background-color: lightgray;">
+                                      <tr>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr ng-repeat-start="suggestion in problemSuggestions">
+                                        <td>
+                                          <button ng-if="suggestion.expanded" ng-click="suggestion.expanded = !suggestion.expanded;">-</button>
+                                          <button ng-if="!suggestion.expanded" ng-click="suggestion.expanded = !suggestion.expanded;showRepliesToComment(suggestion.suggestionId);">+</button>
+                                        </td>
+                                        <td>{{suggestion.suggestion}}
+                                            <span class="pull-right text-muted">
+                                               <img src="/userImage/{{suggestion.suggesterPhoto}}"  width="30" height="30">{{suggestion.suggesterUsername}}
+                                                <span am-time-ago="suggestion.suggestionTime">
+
+                                                </span>
+                                            </span>
+                                             <div>
+                                              <input type="checkbox" ng-model="replyCheckBox" ><span translate="reply"></span>&nbsp;&nbsp; <a href="" ng-click="showRepliesToComment(suggestion.suggestionId)"><span translate="numberOfReplies"></span><label class="alert-success">&nbsp;&nbsp;{{suggestion.numberOfReplies}}</label>  </a>
+                                            </div>
+                                             <div ng-show="replyCheckBox" class="panel-footer">
+                                                  <div class="input-group">
+                                                      <input id="btn-input" type="text" ng-model="message" class="input1 form-control input-sm chat_input" placeholder="Write your message here..." />
+                                                      <span class="input-group-btn">
+                                                      <button class="btn btn-primary btn-sm" id="btn-chat"  ng-click="suggestionsReply(suggestion.problemId,suggestion.suggestionId,message);replies(suggestion.suggestionId);suggestion.expanded = true;" translate="send"></button>
+                                                      </span>
+                                                  </div>
+                                             </div>
+                                        </td>
+                                      </tr>
+                                      <tr ng-if="suggestion.expanded" ng-repeat-end>
+                                        <td colspan="3">
+                                                <div ng-if="suggestion.suggestionId==currentSuggestionId"  class="panel-body alert-success">
+                                                 <ul ng-repeat="reply in replyData">
+                                                      <li style="list-style-type: none;">
+                                                          <div>
+                                                              <label><img src="/userImage/{{reply.photo}}" width="30" height="30">{{reply.replyerName}}</label><span class="pull-right text-muted"><span am-time-ago="reply.timeReplied"></span></span>
+                                                              <p>{{reply.reply}}</p>
+                                                          </div>
+                                                      </li>
+                                                 </ul>
+                                              </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                      </div>
+                    </div>
+                     <div class="modal" id="computerModal" tablindex="-1" data-backdrop="static" data-keyboard="false">
+                       <div class="modal-dialog model-lg">
+                           <div class="modal-content">
+                                <div class="modal-header">
+                                    <button class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                   <label translate="problemType"></label>
+                                    <span ng-if="languageKey==null">
+                                      <select class="form-control" ng-model="$parent.problemType" ng-change="filterByProblemChanged(filterByProblemType.Id)"
+                                          ng-options="filterByProblemType as filterByProblemType.english for filterByProblemType in problemsCriteria">
+                                       </select>
+                                    </span>
+                                     <span ng-if="languageKey=='EN'">
+                                      <select class="form-control" ng-model="$parent.problemType" ng-change="filterByProblemChanged(filterByProblemType.Id)"
+                                          ng-options="filterByProblemType as filterByProblemType.english for filterByProblemType in problemsCriteria">
+                                       </select>
+                                    </span>
+                                     <span ng-if="languageKey=='TG'">
+                                      <select class="form-control" ng-model="$parent.problemType" ng-change="filterByProblemChanged(filterByProblemType.Id)"
+                                          ng-options="filterByProblemType as filterByProblemType.tigrina for filterByProblemType in problemsCriteria">
+                                       </select>
+                                    </span>
+                                     <span ng-if="languageKey=='NL'">
+                                      <select class="form-control" ng-model="$parent.problemType" ng-change="filterByProblemChanged(filterByProblemType.Id)"
+                                          ng-options="filterByProblemType as filterByProblemType.dutch for filterByProblemType in problemsCriteria">
+                                       </select>
+                                    </span>
+                                   <label translate="problemDescription"></label>
+                                   <textarea ng-model="problem" class="form-control" col="30" row="20"></textarea>
+                                   <label translate="whoMaySolveThisProblem"></label><input type="checkbox" ng-model="iDontKnow" translate="idontknow"><span translate="idontknow"></span>
+                                       <div ng-hide="iDontKnow">
+                                          <autocomplete ng-model="profession" attr-placeholder="profession..." profession-enter="onEnter()" click-activation="true" data="professionDatas"  on-type="fillProfession" on-select="professionSelection"></autocomplete>
+                                       </div>
+                                   <button class="btn btn-primary" translate="submit" ng-click="issue()" ng-disabled="disableIssueButton"></button>
+                                </div>
+                            </div>
+                       </div>
+                    </div>
+                </div>
+
+
+
+           </div>
+           <div class="modal" id="saleItemIdInfo" tablindex="-1" data-backdrop="static" data-keyboard="false">   <!--info modal-->
+              <div class="modal-dialog model-lg">
+                 <div class="modal-content">
+                     <div class="modal-header">
+                       <button class="close" data-dismiss="modal">&times;</button>
+                     </div>
+                     <div class="modal-body">
+                       <div class="">
+                           <a href="">{{catagories}}</a>
+                           <div class="gallery">
+                               <img  ng-src="/saleThingsImageCollector/{{saleItemfileName}}" id="1" data-scale="2.4" height="200" width="200" class="thumbnail"></a>
+                               <label>{{saleItemName}}</label><br>
+                                <span translate="price"></span>
+                                <p>{{price}}&nbsp;{{unit}}</p>
+                            </div>
+                         </div>
+                          <div class="">
+                            <a href="#" ng-click="getDetailsOfItemForSale()">get details of this item</a>
+                            <table border="1" style="width:100%">
+                                 <thead>
+                                     <tr>
+                                         <th>measurment</th>
+                                         <th>quantity</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody ng-repeat="data in saleItemDetails">
+                                     <tr>
+                                          <td>{{data.size}}</td>
+                                          <td>{{data.amount}}</td>
+                                     </tr>
+                                 <tbody>
+                             </table>
+                          </div>
+                       </div>
+                     </div>
+                 </div>
+              </div>
+        </div>
+        <!-- end page-wrapper -->
+
+    </div>
+    <!-- end wrapper -->
