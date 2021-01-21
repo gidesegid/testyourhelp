@@ -34,7 +34,7 @@
     "nodemon": "^1.17.5",
     "request": "^2.83.0",
     "sha1": "^1.1.1",
-    "socket.io": "^2.1.1",
+    "socket.io": "^2.4.0",
     "stripe": "^5.4.0",
     "tinyreq": "^3.3.1",
     "uninstall": "0.0.0"
