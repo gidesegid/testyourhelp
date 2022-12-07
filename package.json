@@ -12,7 +12,7 @@
     "@mollie/api-client": "^2.0.3",
     "axios": "^0.18.0",
     "bcryptjs": "^2.4.0",
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.20.1",
     "cheerio": "^1.0.0-rc.2",
     "ejs": "^2.5.2",
     "express": "*",
